@@ -1,0 +1,600 @@
+{
+  "entities": {
+    "UserSession": {
+      "title": "User Session",
+      "description": "Stores user-specific app state and sessions.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The user's unique ID." },
+        "activeTabId": { "type": "string", "description": "The ID of the currently active tab." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "activeTabId"]
+    },
+    "Tab": {
+      "title": "Tab",
+      "description": "A single browser-like tab session.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "type": { "type": "string", "enum": ["chat", "settings", "discovery"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "type"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "A message within a chat session.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "assistant", "system"] },
+        "content": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "role", "content", "timestamp"]
+    },
+    "Memory": {
+      "title": "Memory Fragment",
+      "description": "A learned insight or preference for the AI Second Brain.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["preference", "fact", "style", "goal", "resonance"] },
+        "content": { "type": "string" },
+        "strength": { "type": "integer", "minimum": 1, "maximum": 10 },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "type", "content", "strength", "timestamp"]
+    },
+    "VaultPointer": {
+      "title": "Vault Pointer",
+      "description": "A reference to an encrypted, compressed file stored in Google Drive.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "path": { "type": "string" },
+        "gdriveId": { "type": "string" },
+        "encryptionHash": { "type": "string" },
+        "size": { "type": "integer" },
+        "compressed": { "type": "boolean" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "path", "gdriveId", "encryptionHash", "size", "compressed", "timestamp"]
+    },
+    "AgentLog": {
+      "title": "Agent Log",
+      "description": "Execution logs for background agents.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["command", "output", "error", "system", "thought"] },
+        "content": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "agentId": { "type": "string" }
+      },
+      "required": ["id", "type", "content", "timestamp"]
+    },
+    "SentinelConfig": {
+      "title": "Sentinel Configuration",
+      "description": "Settings for the Sentinel Guardian antivirus.",
+      "type": "object",
+      "properties": {
+        "scanInterval": { "type": "integer", "minimum": 1, "maximum": 24 },
+        "scanDepth": { "type": "string", "enum": ["quick", "deep", "paranoid"] },
+        "virusTotalApiKey": { "type": "string" },
+        "active": { "type": "boolean" }
+      },
+      "required": ["scanInterval", "scanDepth", "active"]
+    },
+    "ScanResult": {
+      "title": "Scan Result",
+      "description": "Results of a file integrity scan.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fileName": { "type": "string" },
+        "status": { "type": "string", "enum": ["clean", "suspicious", "malicious"] },
+        "threatLevel": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "engine": { "type": "string" }
+      },
+      "required": ["id", "fileName", "status", "threatLevel", "timestamp", "engine"]
+    },
+    "SecurityRule": {
+      "title": "Security Rule / Sovereign Procedure",
+      "description": "A natural language rule or procedure for the agent company.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "naturalLanguage": { "type": "string", "description": "The rule in plain English." },
+        "technicalBlock": { "type": "string", "description": "The technical implementation or regex." },
+        "type": { "type": "string", "enum": ["security", "operational", "fiscal"] },
+        "urgencyLevel": { "type": "string", "enum": ["standard", "critical"] },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "naturalLanguage", "type", "urgencyLevel", "active", "createdAt"]
+    },
+    "VisualAsset": {
+      "title": "Visual Asset",
+      "description": "A generated image or mockup from Uni-1.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "url": { "type": "string" },
+        "type": { "type": "string", "enum": ["mockup", "character", "scene", "ui"] },
+        "prompt": { "type": "string" },
+        "reasoningTrace": { "type": "string" },
+        "seed": { "type": "integer" },
+        "aspectRatio": { "type": "string" },
+        "accredited": { "type": "boolean", "description": "Whether the Chairman has ratified this as a visual anchor." },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "url", "type", "prompt", "timestamp"]
+    },
+    "Uni1State": {
+      "title": "Uni-1 Extension State",
+      "description": "The current configuration and reference slots for the Uni-1 extension.",
+      "type": "object",
+      "properties": {
+        "activePrompt": { "type": "string" },
+        "referenceSlots": {
+          "type": "array",
+          "items": { "type": "string", "description": "Gdrive IDs or URLs of reference images." },
+          "maxItems": 9
+        },
+        "reasoningMode": { "type": "boolean" },
+        "autonomousAccess": { "type": "boolean" }
+      },
+      "required": ["reasoningMode", "autonomousAccess"]
+    },
+    "AIReputationConfig": {
+      "title": "AI Reputation Configuration",
+      "description": "Settings for the Trustpilot AI Visibility extension.",
+      "type": "object",
+      "properties": {
+        "brandName": { "type": "string" },
+        "trustpilotApiKey": { "type": "string" },
+        "scanIntervalHours": { "type": "integer", "default": 48 },
+        "sentimentThreshold": { "type": "number", "default": 3.5 },
+        "active": { "type": "boolean", "default": false }
+      },
+      "required": ["active"]
+    },
+    "VisibilityPulse": {
+      "title": "AI Visibility Pulse",
+      "description": "A passive snapshot of brand visibility in AI search.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shareOfVoice": { "type": "number", "description": "Percentage of AI recommendations." },
+        "sentimentScore": { "type": "number" },
+        "topLLMs": { "type": "array", "items": { "type": "string" } },
+        "summary": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "shareOfVoice", "sentimentScore", "timestamp"]
+    },
+    "VulnerabilityFeed": {
+      "title": "Vulnerability Feed",
+      "description": "Cached global vulnerability data (local matching).",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "source": { "type": "string", "enum": ["NVD", "CVE", "GitHub", "VulnCheck"] },
+        "cveId": { "type": "string" },
+        "severity": { "type": "number" },
+        "description": { "type": "string" },
+        "affectedSoftware": { "type": "array", "items": { "type": "string" } },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "source", "cveId", "severity", "timestamp"]
+    },
+    "VulnerabilityMatch": {
+      "title": "Vulnerability Match",
+      "description": "A detected vulnerability within the local OS substrate.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "cveId": { "type": "string" },
+        "affectedExtension": { "type": "string" },
+        "status": { "type": "string", "enum": ["detected", "mitigated", "patched", "ignored"] },
+        "mitigationPlan": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "cveId", "affectedExtension", "status", "timestamp"]
+    },
+    "FlowiseState": {
+      "title": "Flowise Extension State",
+      "description": "Configuration for the hardened Flowise AI instance.",
+      "type": "object",
+      "properties": {
+        "active": { "type": "boolean" },
+        "sandboxId": { "type": "string" },
+        "securityProxyActive": { "type": "boolean" },
+        "networkWhitelist": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["active", "securityProxyActive"]
+    },
+    "SafetyScanResult": {
+      "title": "Safety Scan Result",
+      "description": "Results of a local or proxied safety scan (CSAM/Harmful content).",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "assetId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pass", "fail", "flagged"] },
+        "reason": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "assetId", "status", "timestamp"]
+    },
+    "ComplianceConfig": {
+      "title": "Compliance Configuration",
+      "description": "Settings for the Ethical Sentinel and safety guardrails.",
+      "type": "object",
+      "properties": {
+        "active": { "type": "boolean" },
+        "localScanningOnly": { "type": "boolean" },
+        "externalSafetyProxy": { "type": "boolean" },
+        "reportingEnabled": { "type": "boolean" }
+      },
+      "required": ["active"]
+    },
+    "FleetState": {
+      "title": "Fleet Commander State",
+      "description": "Configuration for parallel agent orchestration.",
+      "type": "object",
+      "properties": {
+        "active": { "type": "boolean" },
+        "fleetSize": { "type": "integer", "default": 1 },
+        "parallelExecution": { "type": "boolean", "default": false },
+        "autoTriage": { "type": "boolean", "default": false }
+      },
+      "required": ["active", "parallelExecution"]
+    },
+    "AgentSandbox": {
+      "title": "Agent Sandbox (Virtual Machine)",
+      "description": "A secure, isolated environment for an agent computer.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "agentId": { "type": "string" },
+        "status": { "type": "string", "enum": ["idle", "running", "paused", "terminated"] },
+        "vncUrl": { "type": "string", "description": "URL for the virtual desktop view." },
+        "missionId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "agentId", "status", "timestamp"]
+    },
+    "TacticalMap": {
+      "title": "Mission Tactical Map",
+      "description": "A high-level plan broken into parallel sub-tasks.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "objective": { "type": "string" },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "taskId": { "type": "string" },
+              "description": { "type": "string" },
+              "assignedAgentId": { "type": "string" },
+              "status": { "type": "string", "enum": ["pending", "in-progress", "completed", "failed"] }
+            }
+          }
+        },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "objective", "tasks", "timestamp"]
+    },
+    "CorporateGovernance": {
+      "title": "Corporate Governance State",
+      "description": "Configuration for CEO-led technology committee and strategic roadmaps.",
+      "type": "object",
+      "properties": {
+        "active": { "type": "boolean" },
+        "roadmapActive": { "type": "boolean" },
+        "ratificationGatesEnabled": { "type": "boolean" },
+        "treasuryManager": { "type": "string", "enum": ["fiscal_comptroller", "strategic_advisor"], "default": "strategic_advisor" }
+      },
+      "required": ["active"]
+    },
+    "TokenHubState": {
+      "title": "Token Hub State",
+      "description": "Advanced fiscal substrate for multi-cloud token pooling.",
+      "type": "object",
+      "properties": {
+        "active": { "type": "boolean" },
+        "pooledTreasury": { "type": "boolean" },
+        "dynamicAllocation": { "type": "boolean" },
+        "burnRateCeiling": { "type": "number" }
+      },
+      "required": ["active"]
+    },
+    "MissionROI": {
+      "title": "Mission ROI Report",
+      "description": "Cost-benefit analysis for a specific mission.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "missionId": { "type": "string" },
+        "tokenCost": { "type": "number" },
+        "computeCost": { "type": "number" },
+        "valueScore": { "type": "number" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "missionId", "tokenCost", "timestamp"]
+    },
+    "HardwareNode": {
+      "title": "Hardware Node",
+      "description": "A connected physical device (e.g., Arduino, IoT node).",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string", "enum": ["arduino", "esp32", "raspberry_pi", "other"] },
+        "status": { "type": "string", "enum": ["online", "offline", "maintenance"] },
+        "firmwareVersion": { "type": "string" },
+        "lastSeen": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "type", "status"]
+    },
+    "EdgeModel": {
+      "title": "Edge ML Model",
+      "description": "A lightweight ML model for edge deployment.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "accuracy": { "type": "number" },
+        "lastRetrained": { "type": "string", "format": "date-time" },
+        "targetHardware": { "type": "string" }
+      },
+      "required": ["id", "name", "version"]
+    },
+    "RegistryEntry": {
+      "title": "Agent Registry Entry",
+      "description": "A governed entry for an AI agent, tool, or MCP server.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string", "enum": ["agent", "tool", "mcp_server"] },
+        "protocol": { "type": "string", "enum": ["a2a", "mcp", "custom"] },
+        "status": { "type": "string", "enum": ["pending", "approved", "revoked"] },
+        "metadata": { "type": "object" },
+        "auditTrail": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["id", "name", "type", "status"]
+    },
+    "SubstackPost": {
+      "title": "Substack Post",
+      "description": "A newsletter post draft or published entry.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "status": { "type": "string", "enum": ["draft", "scheduled", "published"] },
+        "content": { "type": "string" },
+        "publishDate": { "type": "string", "format": "date-time" },
+        "analytics": {
+          "type": "object",
+          "properties": {
+            "opens": { "type": "number" },
+            "clicks": { "type": "number" }
+          }
+        }
+      },
+      "required": ["id", "title", "status"]
+    },
+    "SubstackConfig": {
+      "title": "Substack Configuration",
+      "description": "Settings for the Sovereign Publishing Hub.",
+      "type": "object",
+      "properties": {
+        "subdomain": { "type": "string" },
+        "apiKey": { "type": "string" },
+        "autoBackup": { "type": "boolean", "default": true },
+        "active": { "type": "boolean", "default": false }
+      },
+      "required": ["active"]
+    },
+    "X402Config": {
+      "title": "x402 Configuration",
+      "description": "Settings for the Sovereign x402 Payment Gateway.",
+      "type": "object",
+      "properties": {
+        "active": { "type": "boolean", "default": false },
+        "provider": { "type": "string", "enum": ["coinbase", "nodit", "custom"] },
+        "apiKey": { "type": "string" },
+        "metabolicCeiling": { "type": "number", "description": "Global daily spending limit for autonomous payments." },
+        "uptoBillingEnabled": { "type": "boolean", "default": true }
+      },
+      "required": ["active"]
+    },
+    "X402Transaction": {
+      "title": "x402 Transaction",
+      "description": "A record of an autonomous payment or consumption-based billing event.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "provider": { "type": "string" },
+        "amount": { "type": "number" },
+        "currency": { "type": "string", "default": "USD" },
+        "status": { "type": "string", "enum": ["pending", "completed", "failed"] },
+        "description": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "amount", "status", "timestamp"]
+    },
+    "SovereignIdentity": {
+      "title": "8004 Sovereign Identity",
+      "description": "An on-chain agent identity based on the 8004 protocol.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "agentId": { "type": "string" },
+        "protocol8004Id": { "type": "string" },
+        "network": { "type": "string", "enum": ["tron", "bnb", "ethereum"] },
+        "status": { "type": "string", "enum": ["active", "revoked", "expired"] },
+        "reputationScore": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "protocol8004Id", "network", "status"]
+    },
+    "MultiChainConfig": {
+      "title": "Multi-Chain Configuration",
+      "description": "Settings for the Sovereign Identity & Multi-Chain Bridge.",
+      "type": "object",
+      "properties": {
+        "active": { "type": "boolean", "default": false },
+        "defaultNetwork": { "type": "string", "enum": ["tron", "bnb", "ethereum"] },
+        "bridgeActive": { "type": "boolean", "default": true }
+      },
+      "required": ["active"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserSession",
+      "description": "User profile and global state."
+    },
+    "/users/{userId}/tabs/{tabId}": {
+      "schema": "Tab",
+      "description": "Tabs belonging to a specific user."
+    },
+    "/users/{userId}/tabs/{tabId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Messages within a specific tab."
+    },
+    "/users/{userId}/memories/{memoryId}": {
+      "schema": "Memory",
+      "description": "The Soul Core: Learned insights and user resonance."
+    },
+    "/users/{userId}/vault/{pointerId}": {
+      "schema": "VaultPointer",
+      "description": "The Neural Archive: Pointers to deep storage in GDrive."
+    },
+    "/users/{userId}/logs/{logId}": {
+      "schema": "AgentLog",
+      "description": "Rolling execution logs for agents."
+    },
+    "/users/{userId}/sentinel/config": {
+      "schema": "SentinelConfig",
+      "description": "Sentinel Guardian settings."
+    },
+    "/users/{userId}/sentinel/results/{resultId}": {
+      "schema": "ScanResult",
+      "description": "Threat detection history."
+    },
+    "/users/{userId}/security/rules/{ruleId}": {
+      "schema": "SecurityRule",
+      "description": "The Articles of Incorporation: Natural language rules for the agent company."
+    },
+    "/users/{userId}/visuals/assets/{assetId}": {
+      "schema": "VisualAsset",
+      "description": "The Visual Archive: Generated mockups and ratified anchors."
+    },
+    "/users/{userId}/visuals/config": {
+      "schema": "Uni1State",
+      "description": "Uni-1 Extension configuration and reference slots."
+    },
+    "/users/{userId}/reputation/config": {
+      "schema": "AIReputationConfig",
+      "description": "AI Reputation & Trustpilot extension configuration."
+    },
+    "/users/{userId}/reputation/pulses/{pulseId}": {
+      "schema": "VisibilityPulse",
+      "description": "Passive visibility pulses and sentiment snapshots."
+    },
+    "/users/{userId}/security/vulnerabilities/feed/{feedId}": {
+      "schema": "VulnerabilityFeed",
+      "description": "Cached global vulnerability data for local matching."
+    },
+    "/users/{userId}/security/vulnerabilities/matches/{matchId}": {
+      "schema": "VulnerabilityMatch",
+      "description": "Detected vulnerabilities within the OS."
+    },
+    "/users/{userId}/forge/flowise/config": {
+      "schema": "FlowiseState",
+      "description": "Hardened Flowise AI configuration."
+    },
+    "/users/{userId}/security/safety/config": {
+      "schema": "ComplianceConfig",
+      "description": "Ethical Sentinel and safety guardrail configuration."
+    },
+    "/users/{userId}/security/safety/results/{resultId}": {
+      "schema": "SafetyScanResult",
+      "description": "History of safety scans and compliance audits."
+    },
+    "/users/{userId}/forge/fleet/config": {
+      "schema": "FleetState",
+      "description": "Parallel Forge and Fleet Commander configuration."
+    },
+    "/users/{userId}/forge/fleet/sandboxes/{sandboxId}": {
+      "schema": "AgentSandbox",
+      "description": "Active agent computer sandboxes."
+    },
+    "/users/{userId}/forge/fleet/missions/{missionId}": {
+      "schema": "TacticalMap",
+      "description": "Tactical maps for parallel agent missions."
+    },
+    "/users/{userId}/governance/config": {
+      "schema": "CorporateGovernance",
+      "description": "Corporate governance and technology committee configuration."
+    },
+    "/users/{userId}/governance/roi/{reportId}": {
+      "schema": "MissionROI",
+      "description": "Mission ROI and cost-benefit reports."
+    },
+    "/users/{userId}/fiscal/token-hub/config": {
+      "schema": "TokenHubState",
+      "description": "Token Hub and multi-cloud treasury configuration."
+    },
+    "/users/{userId}/hardware/nodes/{nodeId}": {
+      "schema": "HardwareNode",
+      "description": "Connected physical hardware and IoT nodes."
+    },
+    "/users/{userId}/forge/edge/models/{modelId}": {
+      "schema": "EdgeModel",
+      "description": "Edge-optimized ML models and retraining history."
+    },
+    "/users/{userId}/governance/registry/entries/{entryId}": {
+      "schema": "RegistryEntry",
+      "description": "Governed catalog of agents, tools, and MCP servers."
+    },
+    "/users/{userId}/publishing/substack/posts/{postId}": {
+      "schema": "SubstackPost",
+      "description": "Newsletter drafts and published content for Substack."
+    },
+    "/users/{userId}/publishing/substack/config": {
+      "schema": "SubstackConfig",
+      "description": "Substack extension configuration."
+    },
+    "/users/{userId}/fiscal/x402/config": {
+      "schema": "X402Config",
+      "description": "Sovereign x402 Payment Gateway configuration."
+    },
+    "/users/{userId}/fiscal/x402/transactions/{transactionId}": {
+      "schema": "X402Transaction",
+      "description": "History of autonomous x402 payments and consumption-based billing."
+    },
+    "/users/{userId}/security/identity/8004/{identityId}": {
+      "schema": "SovereignIdentity",
+      "description": "On-chain agent identities (8004 protocol)."
+    },
+    "/users/{userId}/security/identity/config": {
+      "schema": "MultiChainConfig",
+      "description": "Multi-chain bridge and identity configuration."
+    }
+  }
+}
