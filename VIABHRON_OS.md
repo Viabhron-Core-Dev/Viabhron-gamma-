@@ -56,20 +56,9 @@ A structured registry that manages the capabilities and power levels of the OS.
             *   **Sanitization Briefing**: The agent provides a small "Sanitization Report" (e.g., "Removed 2 tracking pixels and 1 suspicious link") for every processed email.
         *   **Viabhronic Loader**: A PWA-based "Super App" shell (like a J2ME Loader) that hosts and toggles "Mini-Apps" or "Sovereign Gems". It provides a local, offline-first presence for your private tools. [DONE]
         *   **Sovereign Gems**: Private, agentic applications (similar to GPTs/Gems) built within the OS. They leverage the **SOP Registry** and **Neural Archive** to provide specialized intelligence without compromising privacy. [DONE]
+        *   **Sovereign Swarm Simulator (SSS)**: A social-dynamics engine for modeling emergent behavior in massive agent populations (up to 1 million agents). It processes real-world context to generate narrative strategic forecasts. [DONE]
         *   **Sovereign Creative Studio**: A visual IDE for orchestrating multi-step creative workflows via a spatial canvas.
             *   **Project VOID Integration**: Physics-aware video object erasure and scene manipulation, enabling professional-grade video editing within the private substrate.
-            *   **Luma Uni-1 Unified Intelligence Extension**: A "Unified" image generation and reasoning module. It combines image understanding and generation in a single architecture, allowing for "Common-Sense" scene completion and reference-guided editing. [NEW]
-            *   **Trustpilot AI Visibility Extension**: A passive brand monitoring module that tracks "AI Share of Voice" and sentiment in LLM-powered search. Defaults to "OFF" (Cold State) and uses Late-Binding activation. [NEW]
-            *   **Hardened Flowise AI Extension**: A low-code orchestration module for building agentic chains. Runs in a hardened OpenSandbox with a Security Proxy to mitigate RCE and injection attacks. [NEW]
-            *   **Vulnerability Intelligence Extension (Global Security Radar)**: A proactive security module that connects to global CVE/NVD databases. Performs local matching to identify vulnerabilities within the OS substrate without leaking data. [NEW]
-            *   **Ethical Sentinel & Compliance Extension**: A safety-by-design module that implements OpenAI's Child Safety Blueprint. Uses local scanning and secure safety proxies to prevent the generation of harmful content. [NEW]
-            *   **Parallel Forge & Agent Computer Extension**: A high-clearance module for fleet-scale agentic development. Orchestrates multiple agents in isolated virtual desktops (Agent Computers) to build, test, and review in parallel. Scaling is optional and user-controlled. [NEW]
-            *   **Corporate Governance & Token Hub Extension**: An enterprise-grade module for CEO-led technology oversight. Features a strategic roadmap dashboard, ratification gates, and a multi-cloud token treasury. Activation is strictly user-led. [NEW]
-            *   **Sovereign I/O & Edge Extension (Arduino Bridge)**: A hardware-interfacing module for connecting physical nodes (Arduino, ESP32). Features voice-controlled "Mission Command," one-click ML retraining for edge devices, and a consolidated hardware HUD. [NEW]
-            *   **Governed Agent Catalog Extension (Agent Registry)**: A governed catalog for AI agents, tools, and MCP servers. Supports A2A and MCP protocols, approval workflows, and CloudTrail-style audit trails. [NEW]
-            *   **Sovereign Publishing Hub (Substack Integration)**: A content management module for drafting, scheduling, and publishing newsletter content. Features local backups to the Neural Archive and ratified publishing gates. [NEW]
-            *   **Sovereign x402 Payment Gateway Extension**: A financial orchestration module for autonomous, consumption-based billing via the x402 protocol. Features "Upto" metabolic breakers and dynamic treasury management. [NEW]
-            *   **Sovereign Identity & Multi-Chain Bridge Extension**: A security-first module for governing on-chain agent identities via the 8004 protocol. Supports TRON, BNB, and Ethereum networks for cross-platform agentic commerce. [NEW]
         *   **Corporate Kernel (Enterprise Automation)**: A high-clearance substrate for production-scale agentic deployments.
             *   **UiPath & AA Connectors**: Native integration for agents to operate as primary users of enterprise automation platforms.
             *   **Production-Scale Missions**: Enables the deployment of "Sovereign Cells" (branches) specifically for large-scale business logic (e.g., Finance Reconciliation, IT Support).
@@ -78,6 +67,8 @@ A structured registry that manages the capabilities and power levels of the OS.
             *   **Open Router**: A single API gateway for accessing diverse LLMs (Gemini, Claude, GPT).
             *   **Ollama (Local Substrate)**: Integration for running private models on local hardware.
             *   **Google Edge AI Gallery**: Access to on-device models and optimized AI components.
+    *   **Sovereign x402 Payment Gateway**: An autonomous, consumption-based billing system that allows the OS to pay for its own AI services using a "Pooled Treasury" model.
+    *   **8004 Sovereign Identity Protocol**: An on-chain digital passport system that provides agents with verifiable, accredited identities on blockchain networks (TRON, BNB, Ethereum).
 *   **Substrate Protocols**:
     *   **OpenClaw**: A self-hosted agent framework for private, sovereign execution.
     *   **Model Context Protocol (MCP)**: Native support for the industry-standard tool-to-agent communication layer.
@@ -123,19 +114,26 @@ The "Active Intelligence" that performs work within the office, managed by a **M
     *   **Status**: Local/Branch-Specific.
     *   **Brain**: Tiny LLM (Gemma/Phi).
     *   **Role**: A Resident AI that manages a specific branch's mission. It can proactively request "Mission Promotions" from the Chairman if it detects sufficient local hardware resources.
-6.  **Specialized Roles (Optional)**
+6.  **Fiscal Comptroller (The Accountant)** [DONE]
+    *   **Status**: Permanent, "In-Office."
+    *   **Brain**: Specialized Financial LLM.
+    *   **Role**: Manages the OS budget, tracks x402 transactions, and enforces spending limits.
+7.  **Sovereign Identity Registrar (The ID Manager)** [DONE]
+    *   **Status**: Permanent, "In-Office."
+    *   **Brain**: Security-Hardened LLM.
+    *   **Role**: Manages the 8004 Identity Protocol, issuing and verifying agent passports.
+8.  **Specialized Roles (Optional)**
     *   **The Librarian**: An optional agent dedicated to monitoring Hugging Face and GitHub for new "Eggs" (models, tools, datasets) that align with the Chairman's interests and project needs. [DONE]
     *   **The Creative Director**: A specialized agent role for assembling and managing multi-step creative workflows on the Sovereign Creative Studio canvas.
-    *   **The Uni-1 Visual Architect**: A specialized sub-agent dedicated to orchestrating the Luma Uni-1 extension. It handles "Spatial Reasoning" and "Unified Prompting" to ensure visual assets are coherent with the OS's design language. [NEW]
-    *   **The Brand Strategist**: A specialized sub-agent for monitoring AI reputation and visibility. It operates in "Passive Observer" mode by default, providing low-priority pulses to the Sentinel Feed. [NEW]
-    *   **The Adversarial Auditor (Level 5)**: A specialized security agent that "Red Teams" the OS kernel and extensions. It monitors the **Global Security Radar**, performs "Shadow Scans" on newly hatched tools, and drafts **Sovereign Patches** for detected vulnerabilities. [NEW]
-    *   **The Compliance Officer**: A specialized agent role dedicated to ensuring the OS operates within ethical and legal safety guardrails. It monitors agent reasoning for potential safety violations and manages user-ratified reporting. [NEW]
-    *   **The Fleet Commander**: A specialized Level 4 Consultant for parallel agent orchestration. It translates high-level missions into "Tactical Maps" and delegates sub-tasks to a fleet of parallel agents. [NEW]
-    *   **The Edge Architect**: A specialized Level 3 Contractor for managing IoT and physical hardware nodes. It handles firmware configuration, flashing, and real-time monitoring of edge devices. [NEW]
-    *   **The Registry Steward**: A specialized Level 3 Contractor for governing the catalog of AI agents, tools, and MCP servers. It manages approval workflows and audit trails for the Agent Registry. [NEW]
-    *   **The Chief Editor**: A specialized Level 3 Contractor for managing the OS's publishing and newsletter presence (Substack). It handles editorial planning, content ratification, and analytics synthesis. [NEW]
-    *   **The Fiscal Comptroller**: A specialized Level 3 Contractor for managing autonomous financial settlements via the x402 protocol. It monitors consumption-based billing and enforces "Metabolic Ceilings." This role is optional and can be assumed by the **Strategic Advisor** based on user preference. [NEW]
-    *   **The Sovereign Identity Registrar**: A specialized Level 3 Contractor for governing on-chain agent identities (8004 protocol). It handles identity minting, credential presentation, and reputation monitoring across multiple blockchain networks. [NEW]
+    *   **The Workforce Manager**: Manages the autonomous AI workforce, tracking KPIs and enforcing metabolic payrolls. [DONE]
+    *   **The Swarm Architect**: Orchestrates massive agent populations and social dynamics modeling using the OASIS substrate. [DONE]
+    *   **The Linguistic Engineer**: Manages the self-improving translation engine and GDrive-backed linguistic data. [DONE]
+    *   **The Strategic Analyst**: Synthesizes competitive intelligence into McKinsey-style reports using the Strategy Substrate. [DONE]
+    *   **The Procurement Officer**: Manages autonomous visual shopping and inventory using the Shopping Substrate. [DONE]
+    *   **The Synthesis Architect**: Builds live, interactive 3D models and simulations using the Interactive Synthesis Substrate. [DONE]
+    *   **The Sovereign Liaison**: Bridges internal agents with external communication platforms using the Communication Substrate. [DONE]
+    *   **The Enterprise Liaison**: Bridges internal agents with external business platforms using the Enterprise Substrate. [DONE]
+    *   **The DeFi Strategist**: Manages autonomous capital rebalancing and liquidity using the Liquidity Substrate. [DONE]
 
 ### 1.4 Protected Divisions (The Machine Room)
 The "Machine Room" contains the core infrastructure controls, isolated from agent interference.
@@ -144,6 +142,7 @@ The "Machine Room" contains the core infrastructure controls, isolated from agen
     *   **Agent Access**: **Read-Only**. Agents can follow rules but cannot modify them.
     *   **Natural Language Rule Builder**: The Chairman can describe rules in plain English; the OS translates them into hard technical blocks.
     *   **Emergency Lockdown (The Red Switch)**: A high-security protocol to instantly terminate all agent containers and revoke API keys.
+    *   **Sovereign Web Shield (SWS)**: Bridges internal agent identities to external standards (ANS, Web Bot Auth) and enforces AI crawl control on sovereign assets. [DONE]
     *   **Vine Revocation**: A global signal that propagates through the distributed network to instantly kill and wipe all "Orphan" or compromised branches.
     *   **Late-Binding Key Injection**: A security protocol where sensitive API tokens (e.g., Cloudflare, OpenAI) are only provided by the Chairman *after* the Resident AI has finished building and auditing the integration code.
     *   **Device Intelligence (Fingerprint MCP)**: A hardware-level security layer that verifies the Chairman's device identity. It prevents fraud and session hijacking by ensuring sensitive agent actions are only triggered from "Ratified Hardware."
@@ -155,12 +154,17 @@ The "Machine Room" contains the core infrastructure controls, isolated from agen
         *   **Turbo Mode**: Maximum speed and reasoning depth.
         *   **Eco Mode**: Maximum cost-efficiency.
         *   **Stealth Mode**: Minimal footprint and maximum privacy.
+    *   **Sovereign Engine Orchestrator (SEO)**: Manages the on-demand lifecycle of high-performance computational cores (3D, Physics, Inference), spinning them up only when needed. [DONE]
+        *   **Mature Engine Importation**: Capability to import and orchestrate mature substrates like **AutoGen** (Multi-Agent), **MetaGPT** (Software Co), **MemGPT** (Infinite Memory), **Skyvern** (Visual Web Navigation), the **Strategy Substrate** (McKinsey-style Analysis), the **Shopping Substrate** (Autonomous Procurement), the **Interactive Synthesis Substrate** (Live 3D/Data), the **Communication Substrate** (MCP Bridge), the **Enterprise Substrate** (Business Intelligence), and the **Liquidity Substrate** (Cross-Chain Intents).
+    *   **Sovereign Quantum Substrate (SQS)**: Optional, default-off engine using "Cascade" logic for error-corrected quantum simulation and agent reasoning. [DONE]
     *   **TurboQuant Substrate Patch**: A high-performance optimization layer that implements 3-bit KV cache compression. It provides 8x faster attention scoring and 60% reduced memory footprint without accuracy loss, enabling massive context windows on standard hardware.
 *   **Fiscal Division (The Treasury)**:
     *   **Role**: Manages the "Pooled Credit" allocation and task-based intelligence funding.
     *   **Pooled Treasury Protocol**: Replaces per-agent/per-seat fees with a unified credit pool. Credits are dynamically allocated to agents based on task priority and complexity.
     *   **Task-Based Intelligence**: Enables flat-fee agentic services (e.g., $0.25 Code Reviews, $0.10 Security Scans) to provide predictable operational costs.
     *   **Chairman Oversight**: The Chairman sets the "Burn Rate" and "Credit Ceiling" to prevent runaway costs.
+    *   **Sovereign Confidence Slider**: A user-adjustable security gradient (Paranoid, Balanced, Expedited) that dictates the level of autonomous financial ratification required.
+    *   **User Choice in Management**: The Chairman can choose between the **Fiscal Comptroller** (automated) or the **Strategic Advisor** (human-in-the-loop) for treasury management.
 
 ---
 
@@ -205,18 +209,22 @@ The UI is a **Thin Client / Remote Screen**—a window into the Virtual Computer
 
 ### 3.1 The Dual-State UI (The Projection) [DONE]
 *   **The Default: VhatsAppeningAi (VAA)**: A standalone, mobile-first "AI Orchestration" interface. When active, all "Expert Mode" elements (Sidebar, Tab Bar, System HUD) are completely hidden, providing a focused, messenger-like experience for the Chairman.
-*   **The Expert Mode: Browser UI**: A high-density, technical interface for "Architect Mode" work (Machine Room, Forge, Governance). It reveals the full OS shell, including the Sidebar and Tab management system.
+*   **The Expert Mode: Browser UI (The Kernel)**: A high-density, technical interface for "Architect Mode" work (Machine Room, Forge, Governance). It reveals the full OS shell, including the Sidebar and Tab management system.
+    *   **Immutable Kernel**: The Browser UI acts as the immutable system management layer. It cannot be deleted or modified by the user, serving as a permanent recovery layer and "Machine Room."
 *   **The Portal Toggle**: A seamless mechanism for switching between these two top-level shells.
     *   **In VAA**: Tapping the "VhatsAppeningAi" title in the top bar instantly morphs the UI into the Browser UI.
-    *   **In Browser UI**: Tapping the "Viabhron" logo in the sidebar instantly collapses the shell back into the clean VAA interface.
+    *   **In Browser UI**: The **Home icon** in the bottom navigation bar acts as the primary toggle to return to the VAA client.
+    *   **Dashboard Landing**: The Browser UI defaults to a **Dashboard** view upon entry, providing a high-density "Mission Control" overview of system health, active agents, and recent pulses.
+    *   **System Settings**: Relocated to the **System Menu (3-dots)** within the Browser UI, keeping the primary navigation bar focused on core orchestration.
     *   **Consistency**: Both shells share the same core data, active workflows, and agent states. Switching is a "Context Shift" of the viewing lens, not a restart of the OS.
 *   **The Substrate (Reality)**: A complex, text-driven infrastructure optimized for AI processing (JSON, manifests, logs).
 
 *   **The Chairman (The Human)**: Sits at the top of the hierarchy. Does not do the "Work" (coding, searching, processing).
 *   **Instruction Hierarchy (OpenAI IH-Challenge)**: The Architect is programmed to prioritize the Chairman's commands as "System Level" and ignore conflicting "Lower-Tier" requests from sub-agents.
-*   **The Dashboard**: The UI is for the Chairman to look at **Artifacts** (documents/results) and grant **Permissions**. [DONE]
+*   **The Dashboard**: The UI is for the Chairman to look at **Artifacts** (documents/results) and grant **Permissions**. The Browser UI defaults to a Bento-style Dashboard for situational awareness. [DONE]
 *   **The Machine Room UI**: A visually distinct "Industrial" interface (Terminal-Core aesthetic) for Security and Efficiency controls. [DONE]
 *   **The Celestial Client (VhatsAppeningAi)**: The flagship default UI for the OS. [DONE]
+    *   **Modular Extension**: Extracted into a standalone client extension (`/extensions/clients/Vaa`), allowing for custom client UI development and "Kernel-Level" UI separation.
     *   **Celestial Dark Theme**: A premium, glassmorphic UI designed for high-density information and fluid motion.
     *   **Tab Structure**:
         *   **Chats**: The primary communication hub.
@@ -387,7 +395,7 @@ The OS is designed to grow with the user, starting as a "Lean Startup" and expan
 *   **Motion (Framer Motion)**: Used for "Fluid UI" transitions, staggered entrances, and micro-interactions that reinforce the OS's "living" feel.
 
 ### 2. State Management: The Soul Core
-*   **Firebase Firestore**: Acts as the persistent "Soul Core" for real-time, cross-client synchronization.
+*   **Firebase Firestore**: Acts as the persistent "Soul Core" for real-time, cross-client synchronization. The schema is defined by a comprehensive **Firebase Blueprint**, covering User Sessions, Tabs, Vaa Chats, Agents, Memories, and System Notifications.
 *   **React State Hooks**: Used for ephemeral, high-frequency UI state (e.g., sidebar collapse, active tabs).
 *   **Context API (Auth)**: Manages the "Chairman's" identity and session across the entire application.
 

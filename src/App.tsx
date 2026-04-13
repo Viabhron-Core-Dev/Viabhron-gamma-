@@ -40,24 +40,32 @@ import { BottomNavigation } from './components/Shell/BottomNavigation';
 import { SystemHUD } from './components/Shell/SystemHUD';
 import { TabSwitcher } from './components/Shell/TabSwitcher';
 import { ConfirmationGate } from './components/Shell/ConfirmationGate';
-import { Terminal } from '@/extensions/modules/Terminal';
-import { Artifacts } from '@/extensions/modules/Artifacts';
-import { SystemMetrics } from '@/extensions/modules/SystemMetrics';
-import { Simulation } from '@/extensions/modules/Simulation';
-import { Governance } from '@/extensions/modules/Governance';
-import { Forge } from '@/extensions/modules/Forge';
-import { AgentCLI } from '@/extensions/modules/AgentCLI';
-import { Sentinel } from '@/extensions/modules/Sentinel';
+import { Terminal } from '../extensions/modules/Terminal';
+import { Artifacts } from '../extensions/modules/Artifacts';
+import { SystemMetrics } from '../extensions/modules/SystemMetrics';
+import { Simulation } from '../extensions/modules/Simulation';
+import { Governance } from '../extensions/modules/Governance';
+import { Forge } from '../extensions/modules/Forge';
+import { AgentCLI } from '../extensions/modules/AgentCLI';
+import { Sentinel } from '../extensions/modules/Sentinel';
+import { Nexus } from '../extensions/modules/Nexus';
+import { Symphony } from '../extensions/modules/Symphony';
+import { Creative } from '../extensions/modules/Creative';
+import { Monitor as MonitorModule } from '../extensions/modules/Monitor';
 import { SecurityDivision } from './components/MachineRoom/SecurityDivision';
 import { EfficiencyDivision } from './components/MachineRoom/EfficiencyDivision';
+import { VineHardener } from '../extensions/modules/VineHardener';
+import { MemoryPalace } from '../extensions/modules/MemoryPalace';
+import { Registry } from './components/MachineRoom/Registry';
 import { Hatchery } from './components/Shell/Hatchery';
 import { SOPRegistry } from './components/Shell/SOPRegistry';
 import { RatificationRegistry } from './components/Shell/RatificationRegistry';
 import { Onboarding } from './components/Shell/Onboarding';
 import { Logo } from './components/Shell/Logo';
-import { CelestialClient } from "./components/Celestial/CelestialClient";
+import { VaaClient } from "../extensions/clients/Vaa";
+import { SetupBox } from './components/Shell/SetupBox';
 
-import { Extension, TabType, Agent, UIConfig, UIMode, Notification, SystemMode, SecurityRule, EfficiencyPatch, ExternalPlugin, BackgroundTask, LogEntry, SOP, RatificationProposal, MiniApp, Client, OnboardingState } from './types';
+import { Extension, TabType, Agent, UIConfig, UIMode, Notification, SystemMode, SecurityRule, EfficiencyPatch, ExternalPlugin, BackgroundTask, LogEntry, SOP, RatificationProposal, MiniApp, Client, OnboardingState, PrivacyMandate, ModelSecurityPolicy } from './types';
 import { infra } from './lib/infraManager';
 import { db } from './lib/firebase';
 import { doc, setDoc, deleteDoc, collection, onSnapshot } from 'firebase/firestore';
@@ -81,6 +89,13 @@ declare global {
 
 export default function App() {
   const { user, isAuthReady, login, logout } = useAuth();
+  const [isProvisioned, setIsProvisioned] = useState<boolean>(() => {
+    // Bypass setup in development mode for faster iteration
+    if (import.meta.env.DEV) {
+      return true;
+    }
+    return localStorage.getItem('viabhron_provisioned') === 'true';
+  });
   const [extensions, setExtensions] = useState<Extension[]>(INITIAL_EXTENSIONS);
   const [sops, setSops] = useState<SOP[]>(INITIAL_SOPS);
   const [proposals, setProposals] = useState<RatificationProposal[]>(INITIAL_PROPOSALS);
@@ -202,6 +217,19 @@ export default function App() {
   const [systemMode, setSystemMode] = useState<SystemMode>('eco');
   const [isLockdown, setIsLockdown] = useState(false);
   const [securityRules, setSecurityRules] = useState<SecurityRule[]>([]);
+  const [privacyMandates, setPrivacyMandates] = useState<PrivacyMandate[]>([
+    { id: 'm1', provider: 'OpenAI', zeroRetention: true, trainingOptOut: true, status: 'active', updatedAt: new Date().toISOString() },
+    { id: 'm2', provider: 'Anthropic', zeroRetention: true, trainingOptOut: true, status: 'active', updatedAt: new Date().toISOString() },
+    { id: 'm3', provider: 'Google', zeroRetention: true, trainingOptOut: true, status: 'active', updatedAt: new Date().toISOString() }
+  ]);
+  const [modelPolicy, setModelPolicy] = useState<ModelSecurityPolicy>({
+    id: 'p1',
+    name: 'Standard Hatching Policy',
+    enforceSafetensors: true,
+    blockLegacyPickle: true,
+    status: 'active',
+    lastAudit: new Date().toISOString()
+  });
   const [efficiencyPatches, setEfficiencyPatches] = useState<EfficiencyPatch[]>([
     {
       id: 'p1',
@@ -391,7 +419,8 @@ export default function App() {
           - If a sub-agent attempts an unauthorized action or violates a Security Rule, block it silently.
           - Log the event in the Sentinel Feed for the Chairman's review.`,
           activeExtensionIds: ['m3', 't4', 't8', 't9', 't10', 's1', 's4', 's5'],
-          color: '#3b82f6'
+          color: '#3b82f6',
+          isStaff: true
         });
       }
 
@@ -412,7 +441,8 @@ export default function App() {
           3. Analyze files in the Vibe Forge before they are executed.
           4. You live persistently in the cloud backend to provide 24/7 protection.`,
           activeExtensionIds: ['t10', 's4', 's5'], // Sentinel + Search tools for threat hunting
-          color: '#10b981' // Green
+          color: '#10b981', // Green
+          isStaff: true
         });
       }
 
@@ -433,7 +463,8 @@ export default function App() {
           3. Suggest new capabilities to the Chairman for hatching.
           4. Maintain the Open Intelligence catalog in the Universal AI Port.`,
           activeExtensionIds: ['hf', 'gh'],
-          color: '#8b5cf6' // Purple
+          color: '#8b5cf6', // Purple
+          isStaff: true
         });
       }
 
@@ -809,7 +840,7 @@ export default function App() {
   };
 
   const handleRatifyProposal = (id: string) => {
-    setProposals(prev => prev.map(p => p.id === id ? { ...p, status: 'ratified' } : p));
+    setProposals(prev => prev.map(p => p.id === id ? { ...p, status: 'ratified', isUnfolded: p.type === 'department' ? true : p.isUnfolded } : p));
     const prop = proposals.find(p => p.id === id);
     addNotification({
       title: 'Structural Upgrade Ratified',
@@ -854,6 +885,14 @@ export default function App() {
     });
   };
 
+  const handleUpdatePrivacyMandate = (mandate: PrivacyMandate) => {
+    setPrivacyMandates(prev => prev.map(m => m.id === mandate.id ? mandate : m));
+  };
+
+  const handleUpdateModelPolicy = (policy: ModelSecurityPolicy) => {
+    setModelPolicy(policy);
+  };
+
   const handleToggleRule = (id: string) => {
     setSecurityRules(prev => prev.map(r => r.id === id ? { ...r, active: !r.active } : r));
     const rule = securityRules.find(r => r.id === id);
@@ -895,6 +934,25 @@ export default function App() {
       metadata: state
     });
   };
+
+  const handleSetupComplete = (config: any) => {
+    localStorage.setItem('viabhron_provisioned', 'true');
+    localStorage.setItem('viabhron_office_name', config.officeName);
+    localStorage.setItem('viabhron_resident_brain', config.brainType);
+    localStorage.setItem('viabhron_gemini_key', config.geminiKey);
+    setIsProvisioned(true);
+    
+    addLog({
+      level: 'INFO',
+      source: 'Kernel',
+      message: `Sovereign Office "${config.officeName}" provisioned successfully.`,
+      metadata: config
+    });
+  };
+
+  if (!isProvisioned) {
+    return <SetupBox onComplete={handleSetupComplete} />;
+  }
 
   if (!isAuthReady) {
     return (
@@ -945,6 +1003,10 @@ export default function App() {
             onOpenForge={() => onQuickAction(() => handleAddTab('forge', 'Vibe Forge (AI IDE)'))}
             onOpenAgentCLI={() => onQuickAction(() => handleAddTab('agent_cli', 'Agent CLI'))}
             onOpenSentinel={() => onQuickAction(() => handleAddTab('sentinel', 'Sentinel Guardian'))}
+            onOpenMonitor={() => onQuickAction(() => handleAddTab('monitor', 'Sovereign Monitor'))}
+            onOpenVineHardener={() => onQuickAction(() => handleAddTab('vine_hardener', 'Vine Hardener'))}
+            onOpenMemoryPalace={() => onQuickAction(() => handleAddTab('memory_palace', 'Memory Palace'))}
+            onOpenRegistry={() => onQuickAction(() => handleAddTab('registry', 'Federated Registry'))}
             onOpenSecurity={() => onQuickAction(() => handleAddTab('security', 'Security Division'))}
             onOpenEfficiency={() => onQuickAction(() => handleAddTab('efficiency', 'Efficiency Patches'))}
             onOpenHatchery={() => onQuickAction(() => handleAddTab('hatchery', 'The Hatchery'))}
@@ -1033,9 +1095,10 @@ export default function App() {
 
             <div className="flex-1 relative h-full">
               {uiMode === 'vaa' ? (
-                <CelestialClient agents={agents} />
+                <VaaClient agents={agents} />
               ) : (
-                tabs.map((tab) => (
+                <>
+                  {tabs.map((tab) => (
                   <div 
                     key={tab.id}
                     className={`absolute inset-0 transition-opacity duration-300 ${tab.id === activeTabId && tab.status === 'active' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
@@ -1098,6 +1161,8 @@ export default function App() {
                     <Simulation uiMode={uiMode} />
                   ) : tab.type === 'governance' ? (
                     <Governance uiMode={uiMode} />
+                  ) : tab.type === 'memory_palace' ? (
+                    <MemoryPalace />
                   ) : tab.type === 'forge' ? (
                     <Forge isLockdown={isLockdown} checkSovereignProcedures={checkSovereignProcedures} uiMode={uiMode} />
                   ) : tab.type === 'agent_cli' ? (
@@ -1129,6 +1194,18 @@ export default function App() {
                       logs={logs}
                       uiMode={uiMode}
                     />
+                  ) : tab.type === 'nexus' ? (
+                    <Nexus uiMode={uiMode} />
+                  ) : tab.type === 'symphony' ? (
+                    <Symphony uiMode={uiMode} backgroundTasks={backgroundTasks} logs={logs} />
+                  ) : tab.type === 'creative' ? (
+                    <Creative uiMode={uiMode} />
+                  ) : tab.type === 'vine_hardener' ? (
+                    <VineHardener />
+                  ) : tab.type === 'registry' ? (
+                    <Registry />
+                  ) : tab.type === 'monitor' ? (
+                    <MonitorModule />
                   ) : tab.type === 'sops' ? (
                     <SOPRegistry sops={sops} onExecute={(sop) => console.log('Executing SOP:', sop)} uiMode={uiMode} />
                   ) : tab.type === 'proposals' ? (
@@ -1148,7 +1225,10 @@ export default function App() {
                       onLockdown={handleLockdown}
                       isLockdownActive={isLockdown}
                       onUnlock={handleUnlock}
-                      uiMode={uiMode}
+                      privacyMandates={privacyMandates}
+                      onUpdatePrivacyMandate={handleUpdatePrivacyMandate}
+                      modelPolicy={modelPolicy}
+                      onUpdateModelPolicy={handleUpdateModelPolicy}
                     />
                   ) : tab.type === 'efficiency' ? (
                     <EfficiencyDivision 
@@ -1384,7 +1464,7 @@ export default function App() {
                     </div>
                   </div>
                 ) : tab.type === 'vhatsappening' ? (
-                  <CelestialClient agents={agents} />
+                  <VaaClient agents={agents} />
                 ) : tab.type === 'placeholder_client' ? (
                   <div className="h-full bg-gray-950 flex flex-col items-center justify-center space-y-4 p-8 text-center">
                     <div className="w-20 h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center">
@@ -1397,8 +1477,12 @@ export default function App() {
                     </div>
                   </div>
                 ) : null}
-              </div>
-            )))}
+                  </div>
+                ))}
+
+                {/* Ascend Button Removed - Now using Home button in BottomNavigation */}
+              </>
+            )}
           </div>
 
           {uiMode === 'browser' && (
@@ -1418,7 +1502,7 @@ export default function App() {
                 onTabClose={handleCloseTab}
                 onAddTab={() => onQuickAction(() => handleAddTab())}
                 onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-                onOpenSettings={() => onQuickAction(() => handleAddTab('settings', 'System Settings'))}
+                onToggleUIMode={() => window.dispatchEvent(new CustomEvent('viabhron:toggle-ui'))}
                 onOpenTabSwitcher={() => setIsTabSwitcherOpen(true)}
                 onOpenSystemMenu={() => setIsSystemMenuOpen(true)}
                 onEditTab={(tab) => {
@@ -1476,12 +1560,22 @@ export default function App() {
                     </button>
                     <button 
                       onClick={() => {
-                        setIsAgentSettingsOpen(true);
+                        onQuickAction(() => handleAddTab('settings', 'System Settings'));
                         setIsSystemMenuOpen(false);
                       }}
                       className="w-full flex items-center gap-3 p-3 hover:bg-white/5 rounded-2xl transition-colors text-left group"
                     >
                       <Settings className="w-4 h-4 text-gray-500 group-hover:text-blue-400" />
+                      <span className="text-xs font-bold text-gray-300 group-hover:text-white uppercase tracking-wider">System Settings</span>
+                    </button>
+                    <button 
+                      onClick={() => {
+                        setIsAgentSettingsOpen(true);
+                        setIsSystemMenuOpen(false);
+                      }}
+                      className="w-full flex items-center gap-3 p-3 hover:bg-white/5 rounded-2xl transition-colors text-left group"
+                    >
+                      <Bot className="w-4 h-4 text-gray-500 group-hover:text-blue-400" />
                       <span className="text-xs font-bold text-gray-300 group-hover:text-white uppercase tracking-wider">Agent Settings</span>
                     </button>
                     <button className="w-full flex items-center gap-3 p-3 hover:bg-white/5 rounded-2xl transition-colors text-left group">

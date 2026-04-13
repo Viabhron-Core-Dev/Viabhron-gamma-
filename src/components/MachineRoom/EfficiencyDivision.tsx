@@ -202,6 +202,36 @@ export const EfficiencyDivision: React.FC<EfficiencyDivisionProps> = ({
           </section>
 
           <section className="bg-blue-950/5 border border-blue-900/20 p-6 rounded-lg">
+            <h2 className="text-sm font-bold text-blue-700 mb-4 uppercase tracking-widest flex items-center gap-2">
+              <Zap className="w-4 h-4" />
+              Sovereign Substrate Tuner
+            </h2>
+            <div className="space-y-4">
+              <div className="flex justify-between text-[10px] uppercase">
+                <span className="text-blue-900">Hardware Profile:</span>
+                <span className="text-blue-400">NVIDIA RTX 4090 (Branch_01)</span>
+              </div>
+              <div className="flex justify-between text-[10px] uppercase">
+                <span className="text-blue-900">Backend:</span>
+                <span className="text-blue-400">TensorRT (Optimized)</span>
+              </div>
+              <div className="flex justify-between text-[10px] uppercase">
+                <span className="text-blue-900">KV-Cache:</span>
+                <span className="text-emerald-500">Active (v0.2.0)</span>
+              </div>
+              <div className="flex justify-between text-[10px] uppercase">
+                <span className="text-blue-900">Optimization Score:</span>
+                <span className="text-blue-400">98.4%</span>
+              </div>
+              <div className="pt-4 border-t border-blue-900/20">
+                <button className="w-full py-2 bg-blue-900/10 border border-blue-900 hover:bg-blue-500 hover:text-black hover:border-blue-500 text-[9px] font-bold uppercase tracking-widest transition-all">
+                  Re-Profile Substrate
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-blue-950/5 border border-blue-900/20 p-6 rounded-lg">
             <h2 className="text-sm font-bold text-blue-700 mb-4 uppercase tracking-widest">Engine Diagnostics</h2>
             <div className="space-y-4">
               <div className="flex justify-between text-[10px] uppercase">

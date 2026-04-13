@@ -193,11 +193,16 @@ export const Chat: React.FC<ChatProps> = ({
           agent: agent || {
             id: 'default',
             name: 'Viabhron Assistant',
+            description: 'Core OS Assistant',
+            role: 'executive',
             provider: 'gemini',
             model: 'gemini-3-flash-preview',
             systemInstruction: 'You are a helpful assistant.',
             activeExtensionIds: [],
-            color: '#3b82f6'
+            color: '#3b82f6',
+            status: 'active',
+            capabilities: ['chat', 'system_control'],
+            lastActive: new Date()
           },
           history: [...messages, { id: 'temp', role: 'user', content, timestamp: new Date() }]
         });

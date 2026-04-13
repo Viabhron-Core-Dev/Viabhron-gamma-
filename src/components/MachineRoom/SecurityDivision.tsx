@@ -10,10 +10,16 @@ import {
   Terminal as TerminalIcon,
   Search,
   Eye,
-  EyeOff
+  EyeOff,
+  Globe,
+  RefreshCw,
+  Fingerprint,
+  Database,
+  ShieldCheck
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { SecurityRule } from '../../types';
+import { SecurityRule, PrivacyMandate, ModelSecurityPolicy } from '../../types';
+import { translateText } from '../../services/translationService';
 
 interface SecurityDivisionProps {
   rules: SecurityRule[];
@@ -23,6 +29,10 @@ interface SecurityDivisionProps {
   onLockdown: () => void;
   isLockdownActive: boolean;
   onUnlock: () => void;
+  privacyMandates: PrivacyMandate[];
+  onUpdatePrivacyMandate: (mandate: PrivacyMandate) => void;
+  modelPolicy: ModelSecurityPolicy;
+  onUpdateModelPolicy: (policy: ModelSecurityPolicy) => void;
 }
 
 export const SecurityDivision: React.FC<SecurityDivisionProps> = ({
@@ -32,20 +42,45 @@ export const SecurityDivision: React.FC<SecurityDivisionProps> = ({
   onDeleteRule,
   onLockdown,
   isLockdownActive,
-  onUnlock
+  onUnlock,
+  privacyMandates,
+  onUpdatePrivacyMandate,
+  modelPolicy,
+  onUpdateModelPolicy
 }) => {
   const [newRuleText, setNewRuleText] = useState('');
   const [newRuleType, setNewRuleType] = useState<'security' | 'operational' | 'fiscal'>('security');
   const [newRuleUrgency, setNewRuleUrgency] = useState<'standard' | 'critical'>('standard');
   const [isLockdownConfirmOpen, setIsLockdownConfirmOpen] = useState(false);
   const [lockdownPhrase, setLockdownPhrase] = useState('');
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [translatedFeed, setTranslatedFeed] = useState<string[]>([]);
   const LOCKDOWN_PHRASE = 'INITIATE_SOVEREIGN_LOCKDOWN';
+
+  const initialFeed = [
+    "[02:12:01] Kernel integrity verified.",
+    "[01:55:42] Sandbox 04 initialized.",
+    "[01:42:10] Policy audit complete."
+  ];
+
+  const handleTranslateFeed = async () => {
+    setIsTranslating(true);
+    try {
+      const translations = await Promise.all(
+        initialFeed.map(log => translateText(log, "Spanish")) // Example: Translate to Spanish
+      );
+      setTranslatedFeed(translations);
+    } catch (error) {
+      console.error("Linguistic Bridge Error:", error);
+    } finally {
+      setIsTranslating(false);
+    }
+  };
 
   const handleAddRule = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newRuleText.trim()) return;
 
-    // In a real app, this would be translated by an AI service
     onAddRule({
       name: `${newRuleType.toUpperCase()}_POLICY_${Math.random().toString(36).substr(2, 4).toUpperCase()}`,
       description: 'Chairman-defined sovereign procedure',
@@ -123,7 +158,7 @@ export const SecurityDivision: React.FC<SecurityDivisionProps> = ({
                   className="w-full bg-black border border-green-900/50 rounded p-4 text-sm focus:outline-none focus:border-green-500 transition-all h-32 resize-none placeholder:text-green-900"
                 />
                 <div className="absolute bottom-4 right-4 text-[10px] text-green-900">
-                  AI Translation Engine Active
+                  Sovereign Linguistic Bridge Active
                 </div>
               </div>
               <button 
@@ -183,6 +218,88 @@ export const SecurityDivision: React.FC<SecurityDivisionProps> = ({
                   No custom policies active
                 </div>
               )}
+            </div>
+          </section>
+
+          {/* Sovereign Privacy Proxy (SPP) */}
+          <section className="bg-green-950/10 border border-green-900/30 p-6 rounded-lg">
+            <h2 className="text-sm font-bold mb-4 flex items-center gap-2 uppercase tracking-widest">
+              <Fingerprint className="w-4 h-4" />
+              Sovereign Privacy Proxy (SPP)
+            </h2>
+            <div className="space-y-4">
+              {privacyMandates.map(mandate => (
+                <div key={mandate.id} className="bg-black border border-green-900/30 p-4 rounded flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xs font-bold uppercase text-green-400">{mandate.provider} Mandate</h3>
+                    <p className="text-[10px] text-green-700">Global opt-out & zero retention</p>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[9px] text-green-900 uppercase">Retention</span>
+                      <button 
+                        onClick={() => onUpdatePrivacyMandate({ ...mandate, zeroRetention: !mandate.zeroRetention })}
+                        className={`px-2 py-0.5 rounded border text-[8px] uppercase font-bold transition-all ${mandate.zeroRetention ? 'bg-green-900/40 border-green-500 text-green-400' : 'bg-red-900/20 border-red-900/30 text-red-900'}`}
+                      >
+                        {mandate.zeroRetention ? 'Zero' : 'Standard'}
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[9px] text-green-900 uppercase">Training</span>
+                      <button 
+                        onClick={() => onUpdatePrivacyMandate({ ...mandate, trainingOptOut: !mandate.trainingOptOut })}
+                        className={`px-2 py-0.5 rounded border text-[8px] uppercase font-bold transition-all ${mandate.trainingOptOut ? 'bg-green-900/40 border-green-500 text-green-400' : 'bg-red-900/20 border-red-900/30 text-red-900'}`}
+                      >
+                        {mandate.trainingOptOut ? 'Opt-Out' : 'Opt-In'}
+                      </button>
+                    </div>
+                    <button 
+                      onClick={() => onUpdatePrivacyMandate({ ...mandate, status: mandate.status === 'active' ? 'inactive' : 'active' })}
+                      className={`p-1.5 rounded border transition-all ${mandate.status === 'active' ? 'bg-green-500/20 border-green-500 text-green-500' : 'bg-black border-green-900/30 text-green-900'}`}
+                    >
+                      <Power className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Sovereign Weight-Check (SWC) */}
+          <section className="bg-green-950/10 border border-green-900/30 p-6 rounded-lg">
+            <h2 className="text-sm font-bold mb-4 flex items-center gap-2 uppercase tracking-widest">
+              <ShieldCheck className="w-4 h-4" />
+              Sovereign Weight-Check (SWC)
+            </h2>
+            <div className="bg-black border border-green-900/30 p-4 rounded space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-xs font-bold uppercase text-green-400">Safetensors Enforcement</h3>
+                  <p className="text-[10px] text-green-700">Eliminate pickle-based code execution risks</p>
+                </div>
+                <button 
+                  onClick={() => onUpdateModelPolicy({ ...modelPolicy, enforceSafetensors: !modelPolicy.enforceSafetensors })}
+                  className={`px-3 py-1 rounded border text-[10px] uppercase font-bold transition-all ${modelPolicy.enforceSafetensors ? 'bg-green-900/40 border-green-500 text-green-400' : 'bg-red-900/20 border-red-900/30 text-red-900'}`}
+                >
+                  {modelPolicy.enforceSafetensors ? 'Active' : 'Disabled'}
+                </button>
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-xs font-bold uppercase text-green-400">Block Legacy Pickle</h3>
+                  <p className="text-[10px] text-green-700">Reject .bin and .pkl files during hatching</p>
+                </div>
+                <button 
+                  onClick={() => onUpdateModelPolicy({ ...modelPolicy, blockLegacyPickle: !modelPolicy.blockLegacyPickle })}
+                  className={`px-3 py-1 rounded border text-[10px] uppercase font-bold transition-all ${modelPolicy.blockLegacyPickle ? 'bg-green-900/40 border-green-500 text-green-400' : 'bg-red-900/20 border-red-900/30 text-red-900'}`}
+                >
+                  {modelPolicy.blockLegacyPickle ? 'Active' : 'Disabled'}
+                </button>
+              </div>
+              <div className="pt-2 border-t border-green-900/20 flex items-center justify-between">
+                <span className="text-[8px] text-green-900 uppercase">Last Audit: {modelPolicy.lastAudit}</span>
+                <span className="text-[8px] text-green-500 uppercase font-bold">Status: {modelPolicy.status}</span>
+              </div>
             </div>
           </section>
         </div>
@@ -257,7 +374,17 @@ export const SecurityDivision: React.FC<SecurityDivisionProps> = ({
           </section>
 
           <section className="bg-green-950/5 border border-green-900/20 p-6 rounded-lg">
-            <h2 className="text-sm font-bold text-green-700 mb-4 uppercase tracking-widest">System Status</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-bold text-green-700 uppercase tracking-widest">Security Feed</h2>
+              <button 
+                onClick={handleTranslateFeed}
+                disabled={isTranslating}
+                className="p-1.5 bg-green-900/20 border border-green-900/30 rounded hover:bg-green-900/40 transition-all group"
+                title="Linguistic Bridge: Translate Feed"
+              >
+                {isTranslating ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Globe className="w-3 h-3" />}
+              </button>
+            </div>
             <div className="space-y-4">
               <div className="flex justify-between text-[10px] uppercase">
                 <span className="text-green-900">Uptime:</span>
@@ -267,16 +394,13 @@ export const SecurityDivision: React.FC<SecurityDivisionProps> = ({
                 <span className="text-green-900">Active Containers:</span>
                 <span>04</span>
               </div>
-              <div className="flex justify-between text-[10px] uppercase">
-                <span className="text-green-900">Network Load:</span>
-                <span>0.02%</span>
-              </div>
               <div className="pt-4 border-t border-green-900/20">
-                <div className="text-[9px] text-green-900 uppercase mb-2">Security Feed</div>
                 <div className="space-y-2">
-                  <div className="text-[8px] text-green-800">[02:12:01] Kernel integrity verified.</div>
-                  <div className="text-[8px] text-green-800">[01:55:42] Sandbox 04 initialized.</div>
-                  <div className="text-[8px] text-green-800">[01:42:10] Policy audit complete.</div>
+                  {(translatedFeed.length > 0 ? translatedFeed : initialFeed).map((log, i) => (
+                    <div key={i} className="text-[8px] text-green-800 animate-in fade-in duration-500">
+                      {log}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

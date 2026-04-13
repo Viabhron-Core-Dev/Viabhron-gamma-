@@ -9,7 +9,12 @@ import {
   ShieldCheck,
   ShieldAlert,
   History,
-  Key
+  Key,
+  Users,
+  Briefcase,
+  TrendingUp,
+  Wallet,
+  CheckCircle2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { UIMode } from '../../src/types';
@@ -177,6 +182,74 @@ export const Governance: React.FC<GovernanceProps> = ({ uiMode }) => {
                 Active Monitoring
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Sovereign Workforce Manager (SWM) */}
+        <div className="bg-gray-900 border border-white/5 rounded-2xl p-6 space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Users className="w-4 h-4 text-blue-400" />
+              <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400">Sovereign Workforce Manager (SWM)</h3>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-green-500" />
+                <span className="text-[10px] text-gray-500 uppercase font-bold">8 Active Employees</span>
+              </div>
+              <button className="text-[10px] font-bold text-blue-400 hover:text-blue-300 uppercase tracking-widest transition-colors">Hire Agent</button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              { id: 'e1', name: 'Sales Follow-up', role: 'SDR Agent', kpi: '92%', payroll: 'Active', tokens: '1.2M / 5M' },
+              { id: 'e2', name: 'Market Researcher', role: 'Analyst Agent', kpi: '88%', payroll: 'Active', tokens: '0.8M / 2M' },
+              { id: 'e3', name: 'Content Creator', role: 'Editor Agent', kpi: '95%', payroll: 'Paused', tokens: '4.1M / 10M' },
+              { id: 'e4', name: 'Security Auditor', role: 'Sentinel Agent', kpi: '100%', payroll: 'Active', tokens: '0.1M / 1M' },
+            ].map((employee) => (
+              <div key={employee.id} className="p-4 bg-gray-950 border border-white/5 rounded-xl space-y-4 group hover:border-blue-500/30 transition-all">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-blue-600/20 flex items-center justify-center">
+                      <Briefcase className="w-4 h-4 text-blue-400" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-white">{employee.name}</div>
+                      <div className="text-[10px] text-gray-500 uppercase tracking-tight">{employee.role}</div>
+                    </div>
+                  </div>
+                  <div className={`px-2 py-0.5 rounded text-[8px] font-bold uppercase ${employee.payroll === 'Active' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
+                    {employee.payroll}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 pt-2 border-t border-white/5">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-1.5 text-[8px] text-gray-500 uppercase font-bold">
+                      <TrendingUp className="w-3 h-3" />
+                      Performance (KPI)
+                    </div>
+                    <div className="text-xs font-bold text-white">{employee.kpi}</div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-1.5 text-[8px] text-gray-500 uppercase font-bold">
+                      <Wallet className="w-3 h-3" />
+                      Metabolic Payroll
+                    </div>
+                    <div className="text-xs font-bold text-white">{employee.tokens}</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-2">
+                  <div className="flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 text-green-500" />
+                    <span className="text-[8px] text-green-700 uppercase font-bold">Mission Mandate Verified</span>
+                  </div>
+                  <button className="text-[8px] text-blue-400 hover:underline uppercase font-bold">View Mission Logs</button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

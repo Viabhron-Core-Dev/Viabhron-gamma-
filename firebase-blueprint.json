@@ -19,10 +19,69 @@
       "properties": {
         "id": { "type": "string" },
         "title": { "type": "string" },
-        "type": { "type": "string", "enum": ["chat", "settings", "discovery"] },
+        "type": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "shelved", "archived"] },
+        "agentId": { "type": "string" },
         "createdAt": { "type": "string", "format": "date-time" }
       },
-      "required": ["id", "title", "type"]
+      "required": ["id", "title", "type", "status"]
+    },
+    "Chat": {
+      "title": "Celestial Chat",
+      "description": "A chat session in the Vaa client.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string", "enum": ["direct", "council", "individual", "workflow", "debate", "agent", "gmail", "sentinel"] },
+        "filterCategory": { "type": "string" },
+        "lastMessage": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "type", "updatedAt"]
+    },
+    "Agent": {
+      "title": "Sovereign Agent",
+      "description": "An AI agent within the OS.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "role": { "type": "string", "enum": ["head", "executive", "contractor", "consultant", "specialized"] },
+        "provider": { "type": "string" },
+        "model": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "inactive", "error"] },
+        "color": { "type": "string" },
+        "lastActive": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "role", "provider", "model", "status"]
+    },
+    "FilterConfig": {
+      "title": "Filter Configuration",
+      "description": "User's chat filter preferences.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "label": { "type": "string" },
+        "active": { "type": "boolean" },
+        "order": { "type": "integer" }
+      },
+      "required": ["id", "label", "active", "order"]
+    },
+    "Notification": {
+      "title": "System Notification",
+      "description": "A notification for the user.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "type": { "type": "string", "enum": ["security", "info", "warning", "error", "system"] },
+        "read": { "type": "boolean" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "message", "type", "read", "timestamp"]
     },
     "Message": {
       "title": "Message",
@@ -120,347 +179,560 @@
       },
       "required": ["id", "name", "naturalLanguage", "type", "urgencyLevel", "active", "createdAt"]
     },
+    "TokenGovernance": {
+      "title": "Token Governance",
+      "description": "Settings for managing OS-wide and extension-specific token usage.",
+      "type": "object",
+      "properties": {
+        "globalMasterSlider": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "nexusSlider": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "emergencyBreakerEnabled": { "type": "boolean" },
+        "dailyTokenLimit": { "type": "integer" },
+        "currentDailyUsage": { "type": "integer" },
+        "gracefulDegradationEnabled": { "type": "boolean" },
+        "priorityModuleIds": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["globalMasterSlider", "nexusSlider", "emergencyBreakerEnabled", "dailyTokenLimit", "currentDailyUsage", "gracefulDegradationEnabled"]
+    },
+    "NexusSettings": {
+      "title": "Nexus Settings",
+      "description": "Configuration for the Viabhron Nexus private library.",
+      "type": "object",
+      "properties": {
+        "isEnabled": { "type": "boolean" },
+        "isPrivate": { "type": "boolean" },
+        "allowedAgentIds": { "type": "array", "items": { "type": "string" } },
+        "tokenUsageSlider": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "autoForkEnabled": { "type": "boolean" },
+        "autonomyMandateEnabled": { "type": "boolean" }
+      },
+      "required": ["isEnabled", "isPrivate", "allowedAgentIds", "tokenUsageSlider", "autoForkEnabled", "autonomyMandateEnabled"]
+    },
+    "X402Config": {
+      "title": "X402 Payment Gateway Config",
+      "description": "Settings for the x402 autonomous payment system.",
+      "type": "object",
+      "properties": {
+        "dailyLimit": { "type": "number", "minimum": 0 },
+        "currentSpending": { "type": "number" },
+        "provider": { "type": "string", "enum": ["coinbase", "nodit", "stripe"] },
+        "active": { "type": "boolean" },
+        "lastResetAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["dailyLimit", "currentSpending", "provider", "active"]
+    },
+    "X402Transaction": {
+      "title": "X402 Transaction",
+      "description": "A record of an autonomous payment for AI services.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "amount": { "type": "number" },
+        "currency": { "type": "string" },
+        "service": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "completed", "failed"] },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "agentId": { "type": "string" }
+      },
+      "required": ["id", "amount", "currency", "service", "status", "timestamp"]
+    },
+    "SovereignIdentity": {
+      "title": "Sovereign Identity (8004)",
+      "description": "On-chain digital passport for an agent or user.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "did": { "type": "string", "description": "Decentralized Identifier" },
+        "chain": { "type": "string", "enum": ["tron", "bnb", "ethereum", "base"] },
+        "address": { "type": "string" },
+        "status": { "type": "string", "enum": ["unverified", "verified", "revoked"] },
+        "issuedAt": { "type": "string", "format": "date-time" },
+        "metadata": { "type": "object" }
+      },
+      "required": ["id", "did", "chain", "address", "status"]
+    },
+    "MultiChainConfig": {
+      "title": "Multi-Chain Configuration",
+      "description": "Settings for blockchain bridges and identity registrar.",
+      "type": "object",
+      "properties": {
+        "defaultChain": { "type": "string" },
+        "enabledChains": { "type": "array", "items": { "type": "string" } },
+        "registrarAgentId": { "type": "string" },
+        "autoVerify": { "type": "boolean" }
+      },
+      "required": ["defaultChain", "enabledChains", "registrarAgentId"]
+    },
+    "Watcher": {
+      "title": "Sovereign Watcher",
+      "description": "A background monitor that wakes the OS on specific events.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string", "enum": ["LOG_REGEX", "FIRESTORE_CHANGE", "WEBHOOK", "HTTP_POLL"] },
+        "target": { "type": "string", "description": "The target to monitor (URL, path, or collection)." },
+        "condition": { "type": "string", "description": "The logic/regex to match." },
+        "status": { "type": "string", "enum": ["active", "paused", "triggered", "error"] },
+        "lastTriggered": { "type": "string", "format": "date-time" },
+        "agentId": { "type": "string", "description": "The agent to wake up." },
+        "priority": { "type": "integer", "minimum": 1, "maximum": 5 }
+      },
+      "required": ["id", "name", "type", "target", "status"]
+    },
+    "TranslationMetadata": {
+      "title": "Translation Metadata",
+      "description": "Stores translated versions of content for the Linguistic Bridge.",
+      "type": "object",
+      "properties": {
+        "originalLanguage": { "type": "string" },
+        "targetLanguage": { "type": "string" },
+        "translatedText": { "type": "string" },
+        "confidence": { "type": "number" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["originalLanguage", "targetLanguage", "translatedText", "timestamp"]
+    },
     "VisualAsset": {
       "title": "Visual Asset",
-      "description": "A generated image or mockup from Uni-1.",
+      "description": "An image or visual project within the Vision Lab.",
       "type": "object",
       "properties": {
         "id": { "type": "string" },
         "url": { "type": "string" },
-        "type": { "type": "string", "enum": ["mockup", "character", "scene", "ui"] },
-        "prompt": { "type": "string" },
-        "reasoningTrace": { "type": "string" },
-        "seed": { "type": "integer" },
-        "aspectRatio": { "type": "string" },
-        "accredited": { "type": "boolean", "description": "Whether the Chairman has ratified this as a visual anchor." },
-        "timestamp": { "type": "string", "format": "date-time" }
+        "type": { "type": "string", "enum": ["image", "canvas_project"] },
+        "layers": { "type": "array", "items": { "type": "object" } },
+        "redacted": { "type": "boolean" },
+        "lastEdited": { "type": "string", "format": "date-time" }
       },
-      "required": ["id", "url", "type", "prompt", "timestamp"]
+      "required": ["id", "url", "type", "lastEdited"]
     },
-    "Uni1State": {
-      "title": "Uni-1 Extension State",
-      "description": "The current configuration and reference slots for the Uni-1 extension.",
+    "BranchHardeningStatus": {
+      "title": "Branch Hardening Status",
+      "description": "Status of a local branch's autonomy and QVAC inference capabilities.",
       "type": "object",
       "properties": {
-        "activePrompt": { "type": "string" },
-        "referenceSlots": {
-          "type": "array",
-          "items": { "type": "string", "description": "Gdrive IDs or URLs of reference images." },
-          "maxItems": 9
-        },
-        "reasoningMode": { "type": "boolean" },
-        "autonomousAccess": { "type": "boolean" }
+        "branchId": { "type": "string" },
+        "hardwareProfile": { "type": "string" },
+        "qvacStatus": { "type": "string", "enum": ["active", "optimizing", "standby", "error"] },
+        "metabolicSavings": { "type": "number", "description": "Tokens saved by local inference." },
+        "lastHandshake": { "type": "string", "format": "date-time" }
       },
-      "required": ["reasoningMode", "autonomousAccess"]
+      "required": ["branchId", "qvacStatus", "lastHandshake"]
     },
-    "AIReputationConfig": {
-      "title": "AI Reputation Configuration",
-      "description": "Settings for the Trustpilot AI Visibility extension.",
-      "type": "object",
-      "properties": {
-        "brandName": { "type": "string" },
-        "trustpilotApiKey": { "type": "string" },
-        "scanIntervalHours": { "type": "integer", "default": 48 },
-        "sentimentThreshold": { "type": "number", "default": 3.5 },
-        "active": { "type": "boolean", "default": false }
-      },
-      "required": ["active"]
-    },
-    "VisibilityPulse": {
-      "title": "AI Visibility Pulse",
-      "description": "A passive snapshot of brand visibility in AI search.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "shareOfVoice": { "type": "number", "description": "Percentage of AI recommendations." },
-        "sentimentScore": { "type": "number" },
-        "topLLMs": { "type": "array", "items": { "type": "string" } },
-        "summary": { "type": "string" },
-        "timestamp": { "type": "string", "format": "date-time" }
-      },
-      "required": ["id", "shareOfVoice", "sentimentScore", "timestamp"]
-    },
-    "VulnerabilityFeed": {
-      "title": "Vulnerability Feed",
-      "description": "Cached global vulnerability data (local matching).",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "source": { "type": "string", "enum": ["NVD", "CVE", "GitHub", "VulnCheck"] },
-        "cveId": { "type": "string" },
-        "severity": { "type": "number" },
-        "description": { "type": "string" },
-        "affectedSoftware": { "type": "array", "items": { "type": "string" } },
-        "timestamp": { "type": "string", "format": "date-time" }
-      },
-      "required": ["id", "source", "cveId", "severity", "timestamp"]
-    },
-    "VulnerabilityMatch": {
-      "title": "Vulnerability Match",
-      "description": "A detected vulnerability within the local OS substrate.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "cveId": { "type": "string" },
-        "affectedExtension": { "type": "string" },
-        "status": { "type": "string", "enum": ["detected", "mitigated", "patched", "ignored"] },
-        "mitigationPlan": { "type": "string" },
-        "timestamp": { "type": "string", "format": "date-time" }
-      },
-      "required": ["id", "cveId", "affectedExtension", "status", "timestamp"]
-    },
-    "FlowiseState": {
-      "title": "Flowise Extension State",
-      "description": "Configuration for the hardened Flowise AI instance.",
-      "type": "object",
-      "properties": {
-        "active": { "type": "boolean" },
-        "sandboxId": { "type": "string" },
-        "securityProxyActive": { "type": "boolean" },
-        "networkWhitelist": { "type": "array", "items": { "type": "string" } }
-      },
-      "required": ["active", "securityProxyActive"]
-    },
-    "SafetyScanResult": {
-      "title": "Safety Scan Result",
-      "description": "Results of a local or proxied safety scan (CSAM/Harmful content).",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "assetId": { "type": "string" },
-        "status": { "type": "string", "enum": ["pass", "fail", "flagged"] },
-        "reason": { "type": "string" },
-        "timestamp": { "type": "string", "format": "date-time" }
-      },
-      "required": ["id", "assetId", "status", "timestamp"]
-    },
-    "ComplianceConfig": {
-      "title": "Compliance Configuration",
-      "description": "Settings for the Ethical Sentinel and safety guardrails.",
-      "type": "object",
-      "properties": {
-        "active": { "type": "boolean" },
-        "localScanningOnly": { "type": "boolean" },
-        "externalSafetyProxy": { "type": "boolean" },
-        "reportingEnabled": { "type": "boolean" }
-      },
-      "required": ["active"]
-    },
-    "FleetState": {
-      "title": "Fleet Commander State",
-      "description": "Configuration for parallel agent orchestration.",
-      "type": "object",
-      "properties": {
-        "active": { "type": "boolean" },
-        "fleetSize": { "type": "integer", "default": 1 },
-        "parallelExecution": { "type": "boolean", "default": false },
-        "autoTriage": { "type": "boolean", "default": false }
-      },
-      "required": ["active", "parallelExecution"]
-    },
-    "AgentSandbox": {
-      "title": "Agent Sandbox (Virtual Machine)",
-      "description": "A secure, isolated environment for an agent computer.",
+    "AgentRegistryEntry": {
+      "title": "Agent Registry Entry",
+      "description": "An entry in the Sovereign Federated Registry for an accredited agent.",
       "type": "object",
       "properties": {
         "id": { "type": "string" },
         "agentId": { "type": "string" },
-        "status": { "type": "string", "enum": ["idle", "running", "paused", "terminated"] },
-        "vncUrl": { "type": "string", "description": "URL for the virtual desktop view." },
-        "missionId": { "type": "string" },
-        "timestamp": { "type": "string", "format": "date-time" }
-      },
-      "required": ["id", "agentId", "status", "timestamp"]
-    },
-    "TacticalMap": {
-      "title": "Mission Tactical Map",
-      "description": "A high-level plan broken into parallel sub-tasks.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "objective": { "type": "string" },
-        "tasks": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "taskId": { "type": "string" },
-              "description": { "type": "string" },
-              "assignedAgentId": { "type": "string" },
-              "status": { "type": "string", "enum": ["pending", "in-progress", "completed", "failed"] }
-            }
-          }
-        },
-        "timestamp": { "type": "string", "format": "date-time" }
-      },
-      "required": ["id", "objective", "tasks", "timestamp"]
-    },
-    "CorporateGovernance": {
-      "title": "Corporate Governance State",
-      "description": "Configuration for CEO-led technology committee and strategic roadmaps.",
-      "type": "object",
-      "properties": {
-        "active": { "type": "boolean" },
-        "roadmapActive": { "type": "boolean" },
-        "ratificationGatesEnabled": { "type": "boolean" },
-        "treasuryManager": { "type": "string", "enum": ["fiscal_comptroller", "strategic_advisor"], "default": "strategic_advisor" }
-      },
-      "required": ["active"]
-    },
-    "TokenHubState": {
-      "title": "Token Hub State",
-      "description": "Advanced fiscal substrate for multi-cloud token pooling.",
-      "type": "object",
-      "properties": {
-        "active": { "type": "boolean" },
-        "pooledTreasury": { "type": "boolean" },
-        "dynamicAllocation": { "type": "boolean" },
-        "burnRateCeiling": { "type": "number" }
-      },
-      "required": ["active"]
-    },
-    "MissionROI": {
-      "title": "Mission ROI Report",
-      "description": "Cost-benefit analysis for a specific mission.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "missionId": { "type": "string" },
-        "tokenCost": { "type": "number" },
-        "computeCost": { "type": "number" },
-        "valueScore": { "type": "number" },
-        "timestamp": { "type": "string", "format": "date-time" }
-      },
-      "required": ["id", "missionId", "tokenCost", "timestamp"]
-    },
-    "HardwareNode": {
-      "title": "Hardware Node",
-      "description": "A connected physical device (e.g., Arduino, IoT node).",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "name": { "type": "string" },
-        "type": { "type": "string", "enum": ["arduino", "esp32", "raspberry_pi", "other"] },
-        "status": { "type": "string", "enum": ["online", "offline", "maintenance"] },
-        "firmwareVersion": { "type": "string" },
-        "lastSeen": { "type": "string", "format": "date-time" }
-      },
-      "required": ["id", "name", "type", "status"]
-    },
-    "EdgeModel": {
-      "title": "Edge ML Model",
-      "description": "A lightweight ML model for edge deployment.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
         "name": { "type": "string" },
         "version": { "type": "string" },
-        "accuracy": { "type": "number" },
-        "lastRetrained": { "type": "string", "format": "date-time" },
-        "targetHardware": { "type": "string" }
+        "tier": { "type": "string", "enum": ["resident", "branch", "external"] },
+        "branchId": { "type": "string" },
+        "status": { "type": "string", "enum": ["incubation", "auditing", "ratification", "accredited", "revoked"] },
+        "accreditationId": { "type": "string" },
+        "permissions": { "$ref": "AgentPermissions" },
+        "lastHeartbeat": { "type": "string", "format": "date-time" },
+        "metadata": { "type": "object" }
       },
-      "required": ["id", "name", "version"]
+      "required": ["id", "agentId", "name", "tier", "status", "permissions", "lastHeartbeat"]
     },
-    "RegistryEntry": {
-      "title": "Agent Registry Entry",
-      "description": "A governed entry for an AI agent, tool, or MCP server.",
+    "AgentPermissions": {
+      "title": "Agent Permissions",
+      "description": "Governance and access control settings for an agent.",
+      "type": "object",
+      "properties": {
+        "allowedCommunicationIds": { "type": "array", "items": { "type": "string" } },
+        "canAccessVault": { "type": "boolean" },
+        "canAccessFiscal": { "type": "boolean" },
+        "canAccessSentinel": { "type": "boolean" },
+        "maxDailyTokens": { "type": "integer" },
+        "isolationMode": { "type": "boolean" }
+      },
+      "required": ["allowedCommunicationIds", "canAccessVault", "canAccessFiscal", "canAccessSentinel", "maxDailyTokens", "isolationMode"]
+    },
+    "SubstrateProfile": {
+      "title": "Substrate Profile",
+      "description": "Hardware optimization profile for a local branch.",
+      "type": "object",
+      "properties": {
+        "branchId": { "type": "string" },
+        "gpuModel": { "type": "string" },
+        "backend": { "type": "string", "enum": ["tensorrt", "torch-tensorrt", "cpu", "metal"] },
+        "kvCacheEnabled": { "type": "boolean" },
+        "optimizationScore": { "type": "number" },
+        "lastProfiled": { "type": "string", "format": "date-time" }
+      },
+      "required": ["branchId", "gpuModel", "backend", "kvCacheEnabled", "lastProfiled"]
+    },
+    "VerificationReport": {
+      "title": "Verification Report",
+      "description": "A report generated by the Sovereign Verification Loop (SVL) auditor agent.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "targetFile": { "type": "string" },
+        "generatorAgentId": { "type": "string" },
+        "auditorAgentId": { "type": "string" },
+        "status": { "type": "string", "enum": ["passed", "failed", "warning"] },
+        "lintErrors": { "type": "array", "items": { "type": "string" } },
+        "compileErrors": { "type": "array", "items": { "type": "string" } },
+        "suggestions": { "type": "array", "items": { "type": "string" } },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "targetFile", "generatorAgentId", "auditorAgentId", "status", "timestamp"]
+    },
+    "SystemEvent": {
+      "title": "System Event",
+      "description": "An event published to the Sovereign Event Bus (SEB).",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "topic": { "type": "string" },
+        "payload": { "type": "object" },
+        "publisherId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "priority": { "type": "string", "enum": ["low", "medium", "high", "critical"] }
+      },
+      "required": ["id", "topic", "publisherId", "timestamp", "priority"]
+    },
+    "EventSubscription": {
+      "title": "Event Subscription",
+      "description": "An agent's subscription to a specific event topic.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "agentId": { "type": "string" },
+        "topicPattern": { "type": "string" },
+        "active": { "type": "boolean" },
+        "lastTriggered": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "agentId", "topicPattern", "active"]
+    },
+    "MissionMandate": {
+      "title": "Mission Mandate",
+      "description": "A pre-signed authorization for an agent to control a local branch.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "branchId": { "type": "string" },
+        "agentId": { "type": "string" },
+        "permissions": { "type": "array", "items": { "type": "string" } },
+        "expiresAt": { "type": "string", "format": "date-time" },
+        "signature": { "type": "string" }
+      },
+      "required": ["id", "branchId", "agentId", "permissions", "expiresAt", "signature"]
+    },
+    "DispatchSession": {
+      "title": "Dispatch Session",
+      "description": "An active remote control session on a local branch.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "mandateId": { "type": "string" },
+        "branchId": { "type": "string" },
+        "agentId": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "completed", "failed", "revoked"] },
+        "logs": { "type": "array", "items": { "type": "string" } },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "endedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "mandateId", "branchId", "agentId", "status", "startedAt"]
+    },
+    "MemoryRoom": {
+      "title": "Memory Room",
+      "description": "A high-level spatial category in the Memory Palace.",
       "type": "object",
       "properties": {
         "id": { "type": "string" },
         "name": { "type": "string" },
-        "type": { "type": "string", "enum": ["agent", "tool", "mcp_server"] },
-        "protocol": { "type": "string", "enum": ["a2a", "mcp", "custom"] },
-        "status": { "type": "string", "enum": ["pending", "approved", "revoked"] },
-        "metadata": { "type": "object" },
-        "auditTrail": { "type": "array", "items": { "type": "string" } }
+        "description": { "type": "string" },
+        "icon": { "type": "string" },
+        "locusCount": { "type": "number" }
       },
-      "required": ["id", "name", "type", "status"]
+      "required": ["id", "name", "description", "locusCount"]
     },
-    "SubstackPost": {
-      "title": "Substack Post",
-      "description": "A newsletter post draft or published entry.",
+    "MemoryLocus": {
+      "title": "Memory Locus",
+      "description": "A specific spatial point within a Memory Room.",
       "type": "object",
       "properties": {
         "id": { "type": "string" },
-        "title": { "type": "string" },
-        "status": { "type": "string", "enum": ["draft", "scheduled", "published"] },
-        "content": { "type": "string" },
-        "publishDate": { "type": "string", "format": "date-time" },
-        "analytics": {
+        "roomId": { "type": "string" },
+        "name": { "type": "string" },
+        "position": {
           "type": "object",
           "properties": {
-            "opens": { "type": "number" },
-            "clicks": { "type": "number" }
+            "x": { "type": "number" },
+            "y": { "type": "number" },
+            "z": { "type": "number" }
           }
-        }
+        },
+        "tags": { "type": "array", "items": { "type": "string" } }
       },
-      "required": ["id", "title", "status"]
+      "required": ["id", "roomId", "name", "position"]
     },
-    "SubstackConfig": {
-      "title": "Substack Configuration",
-      "description": "Settings for the Sovereign Publishing Hub.",
+    "VerbatimLog": {
+      "title": "Verbatim Log",
+      "description": "Raw, unedited data stored at a specific locus.",
       "type": "object",
       "properties": {
-        "subdomain": { "type": "string" },
-        "apiKey": { "type": "string" },
-        "autoBackup": { "type": "boolean", "default": true },
-        "active": { "type": "boolean", "default": false }
+        "id": { "type": "string" },
+        "locusId": { "type": "string" },
+        "content": { "type": "string" },
+        "sourceAgentId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "metadata": { "type": "object" }
       },
-      "required": ["active"]
+      "required": ["id", "locusId", "content", "sourceAgentId", "timestamp"]
     },
-    "X402Config": {
-      "title": "x402 Configuration",
-      "description": "Settings for the Sovereign x402 Payment Gateway.",
-      "type": "object",
-      "properties": {
-        "active": { "type": "boolean", "default": false },
-        "provider": { "type": "string", "enum": ["coinbase", "nodit", "custom"] },
-        "apiKey": { "type": "string" },
-        "metabolicCeiling": { "type": "number", "description": "Global daily spending limit for autonomous payments." },
-        "uptoBillingEnabled": { "type": "boolean", "default": true }
-      },
-      "required": ["active"]
-    },
-    "X402Transaction": {
-      "title": "x402 Transaction",
-      "description": "A record of an autonomous payment or consumption-based billing event.",
+    "PrivacyMandate": {
+      "title": "Privacy Mandate",
+      "description": "A global privacy policy for AI providers.",
       "type": "object",
       "properties": {
         "id": { "type": "string" },
         "provider": { "type": "string" },
-        "amount": { "type": "number" },
-        "currency": { "type": "string", "default": "USD" },
-        "status": { "type": "string", "enum": ["pending", "completed", "failed"] },
-        "description": { "type": "string" },
-        "timestamp": { "type": "string", "format": "date-time" }
+        "zeroRetention": { "type": "boolean" },
+        "trainingOptOut": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "updatedAt": { "type": "string", "format": "date-time" }
       },
-      "required": ["id", "amount", "status", "timestamp"]
+      "required": ["id", "provider", "zeroRetention", "trainingOptOut", "status"]
     },
-    "SovereignIdentity": {
-      "title": "8004 Sovereign Identity",
-      "description": "An on-chain agent identity based on the 8004 protocol.",
+    "ProxyLog": {
+      "title": "Proxy Log",
+      "description": "A log of an intercepted AI provider request.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "provider": { "type": "string" },
+        "endpoint": { "type": "string" },
+        "mandateApplied": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["allowed", "blocked"] }
+      },
+      "required": ["id", "timestamp", "provider", "endpoint", "mandateApplied", "status"]
+    },
+    "ModelSecurityPolicy": {
+      "title": "Model Security Policy",
+      "description": "A security policy for model hatching and execution.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "enforceSafetensors": { "type": "boolean" },
+        "blockLegacyPickle": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "lastAudit": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "enforceSafetensors", "blockLegacyPickle", "status"]
+    },
+    "WorkforceRole": {
+      "title": "Workforce Role",
+      "description": "A job description and role definition for an autonomous agent.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "department": { "type": "string" },
+        "baseSOPId": { "type": "string" },
+        "requiredSkills": { "type": "array", "items": { "type": "string" } },
+        "permissions": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["id", "title", "description", "department"]
+    },
+    "AgentKPI": {
+      "title": "Agent KPI",
+      "description": "A performance metric for an autonomous agent.",
       "type": "object",
       "properties": {
         "id": { "type": "string" },
         "agentId": { "type": "string" },
-        "protocol8004Id": { "type": "string" },
-        "network": { "type": "string", "enum": ["tron", "bnb", "ethereum"] },
-        "status": { "type": "string", "enum": ["active", "revoked", "expired"] },
-        "reputationScore": { "type": "number" },
-        "createdAt": { "type": "string", "format": "date-time" }
+        "roleId": { "type": "string" },
+        "metricName": { "type": "string" },
+        "targetValue": { "type": "number" },
+        "currentValue": { "type": "number" },
+        "unit": { "type": "string" },
+        "lastUpdated": { "type": "string", "format": "date-time" }
       },
-      "required": ["id", "protocol8004Id", "network", "status"]
+      "required": ["id", "agentId", "roleId", "metricName", "targetValue", "currentValue", "unit"]
     },
-    "MultiChainConfig": {
-      "title": "Multi-Chain Configuration",
-      "description": "Settings for the Sovereign Identity & Multi-Chain Bridge.",
+    "AgentPayroll": {
+      "title": "Agent Payroll",
+      "description": "Metabolic budget and payment settings for an autonomous agent.",
       "type": "object",
       "properties": {
-        "active": { "type": "boolean", "default": false },
-        "defaultNetwork": { "type": "string", "enum": ["tron", "bnb", "ethereum"] },
-        "bridgeActive": { "type": "boolean", "default": true }
+        "id": { "type": "string" },
+        "agentId": { "type": "string" },
+        "monthlyTokenLimit": { "type": "number" },
+        "tokensConsumed": { "type": "number" },
+        "creditBalance": { "type": "number" },
+        "currency": { "type": "string", "enum": ["x402", "USD", "SOL"] },
+        "status": { "type": "string", "enum": ["active", "paused"] }
       },
-      "required": ["active"]
+      "required": ["id", "agentId", "monthlyTokenLimit", "tokensConsumed", "creditBalance", "currency", "status"]
+    },
+    "EngineConfig": {
+      "title": "Engine Configuration",
+      "description": "Configuration for high-performance computational engines managed by SEO.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string", "enum": ["3d", "physics", "inference", "quantum", "linguistic"] },
+        "status": { "type": "string", "enum": ["dormant", "active", "hibernating"] },
+        "metabolicLoad": { "type": "number" },
+        "config": { "type": "object" }
+      },
+      "required": ["id", "name", "type", "status", "metabolicLoad"]
+    },
+    "EngineSession": {
+      "title": "Engine Session",
+      "description": "An active or historical session of a computational engine.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "engineId": { "type": "string" },
+        "agentId": { "type": "string" },
+        "missionId": { "type": "string" },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "endedAt": { "type": "string", "format": "date-time" },
+        "tokensConsumed": { "type": "number" }
+      },
+      "required": ["id", "engineId", "agentId", "missionId", "startedAt", "tokensConsumed"]
+    },
+    "LinguisticBase": {
+      "title": "Linguistic Base",
+      "description": "A GDrive-backed linguistic substrate for the SLE engine.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "gdriveId": { "type": "string" },
+        "language": { "type": "string" },
+        "version": { "type": "string" },
+        "lastPatched": { "type": "string", "format": "date-time" },
+        "ruleCount": { "type": "number" }
+      },
+      "required": ["id", "gdriveId", "language", "version", "lastPatched", "ruleCount"]
+    },
+    "TranslationCorrection": {
+      "title": "Translation Correction",
+      "description": "A user-ratified or agent-proposed linguistic correction.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "originalText": { "type": "string" },
+        "translatedText": { "type": "string" },
+        "correctedText": { "type": "string" },
+        "context": { "type": "string" },
+        "agentId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "ratified": { "type": "boolean" }
+      },
+      "required": ["id", "originalText", "translatedText", "correctedText", "agentId", "timestamp", "ratified"]
+    },
+    "WebIdentityHandshake": {
+      "title": "Web Identity Handshake",
+      "description": "A cryptographic handshake for external agent accreditation (ANS/Web Bot Auth).",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "agentId": { "type": "string" },
+        "ansName": { "type": "string" },
+        "webBotAuthToken": { "type": "string" },
+        "issuedAt": { "type": "string", "format": "date-time" },
+        "expiresAt": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["active", "revoked", "expired"] }
+      },
+      "required": ["id", "agentId", "ansName", "webBotAuthToken", "issuedAt", "expiresAt", "status"]
+    },
+    "CrawlMandate": {
+      "title": "Crawl Mandate",
+      "description": "A policy for AI crawler access to sovereign-hosted assets.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "domain": { "type": "string" },
+        "allowCrawl": { "type": "boolean" },
+        "agentWhitelist": { "type": "array", "items": { "type": "string" } },
+        "cloudflareZoneId": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "domain", "allowCrawl", "agentWhitelist", "updatedAt"]
+    },
+    "QuantumSimulation": {
+      "title": "Quantum Simulation",
+      "description": "A high-efficiency quantum simulation mission using Cascade logic.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "missionId": { "type": "string" },
+        "qubitCount": { "type": "number" },
+        "cascadeEnabled": { "type": "boolean" },
+        "errorRateReduction": { "type": "number" },
+        "status": { "type": "string", "enum": ["running", "completed", "failed"] },
+        "startedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "missionId", "qubitCount", "cascadeEnabled", "errorRateReduction", "status", "startedAt"]
+    },
+    "CascadeLogic": {
+      "title": "Cascade Logic",
+      "description": "Configuration for the Cascade AI-based error correction logic.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "targetMissionId": { "type": "string" },
+        "correctionDepth": { "type": "number" },
+        "noiseThreshold": { "type": "number" },
+        "efficiencyGain": { "type": "number" }
+      },
+      "required": ["id", "targetMissionId", "correctionDepth", "noiseThreshold", "efficiencyGain"]
+    },
+    "SwarmSimulation": {
+      "title": "Swarm Simulation",
+      "description": "A massive agent swarm simulation for social dynamics modeling.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "contextId": { "type": "string" },
+        "agentCount": { "type": "number" },
+        "status": { "type": "string", "enum": ["initializing", "running", "completed", "failed"] },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "endedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "contextId", "agentCount", "status", "startedAt"]
+    },
+    "SwarmAgent": {
+      "title": "Swarm Agent",
+      "description": "A micro-agent within a swarm simulation.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "simulationId": { "type": "string" },
+        "personality": { "type": "string" },
+        "memoryPalaceId": { "type": "string" },
+        "socialDynamics": { "type": "object" }
+      },
+      "required": ["id", "simulationId", "personality"]
+    },
+    "NarrativeForecast": {
+      "title": "Narrative Forecast",
+      "description": "A narrative report on emergent social patterns from a swarm simulation.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "simulationId": { "type": "string" },
+        "authorAgentId": { "type": "string" },
+        "content": { "type": "string" },
+        "emergentPatterns": { "type": "array", "items": { "type": "string" } },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "simulationId", "authorAgentId", "content", "emergentPatterns", "timestamp"]
     }
   },
   "firestore": {
@@ -500,101 +772,173 @@
       "schema": "SecurityRule",
       "description": "The Articles of Incorporation: Natural language rules for the agent company."
     },
-    "/users/{userId}/visuals/assets/{assetId}": {
-      "schema": "VisualAsset",
-      "description": "The Visual Archive: Generated mockups and ratified anchors."
+    "/users/{userId}/settings/token_governance": {
+      "schema": "TokenGovernance",
+      "description": "OS-wide token management settings."
     },
-    "/users/{userId}/visuals/config": {
-      "schema": "Uni1State",
-      "description": "Uni-1 Extension configuration and reference slots."
-    },
-    "/users/{userId}/reputation/config": {
-      "schema": "AIReputationConfig",
-      "description": "AI Reputation & Trustpilot extension configuration."
-    },
-    "/users/{userId}/reputation/pulses/{pulseId}": {
-      "schema": "VisibilityPulse",
-      "description": "Passive visibility pulses and sentiment snapshots."
-    },
-    "/users/{userId}/security/vulnerabilities/feed/{feedId}": {
-      "schema": "VulnerabilityFeed",
-      "description": "Cached global vulnerability data for local matching."
-    },
-    "/users/{userId}/security/vulnerabilities/matches/{matchId}": {
-      "schema": "VulnerabilityMatch",
-      "description": "Detected vulnerabilities within the OS."
-    },
-    "/users/{userId}/forge/flowise/config": {
-      "schema": "FlowiseState",
-      "description": "Hardened Flowise AI configuration."
-    },
-    "/users/{userId}/security/safety/config": {
-      "schema": "ComplianceConfig",
-      "description": "Ethical Sentinel and safety guardrail configuration."
-    },
-    "/users/{userId}/security/safety/results/{resultId}": {
-      "schema": "SafetyScanResult",
-      "description": "History of safety scans and compliance audits."
-    },
-    "/users/{userId}/forge/fleet/config": {
-      "schema": "FleetState",
-      "description": "Parallel Forge and Fleet Commander configuration."
-    },
-    "/users/{userId}/forge/fleet/sandboxes/{sandboxId}": {
-      "schema": "AgentSandbox",
-      "description": "Active agent computer sandboxes."
-    },
-    "/users/{userId}/forge/fleet/missions/{missionId}": {
-      "schema": "TacticalMap",
-      "description": "Tactical maps for parallel agent missions."
-    },
-    "/users/{userId}/governance/config": {
-      "schema": "CorporateGovernance",
-      "description": "Corporate governance and technology committee configuration."
-    },
-    "/users/{userId}/governance/roi/{reportId}": {
-      "schema": "MissionROI",
-      "description": "Mission ROI and cost-benefit reports."
-    },
-    "/users/{userId}/fiscal/token-hub/config": {
-      "schema": "TokenHubState",
-      "description": "Token Hub and multi-cloud treasury configuration."
-    },
-    "/users/{userId}/hardware/nodes/{nodeId}": {
-      "schema": "HardwareNode",
-      "description": "Connected physical hardware and IoT nodes."
-    },
-    "/users/{userId}/forge/edge/models/{modelId}": {
-      "schema": "EdgeModel",
-      "description": "Edge-optimized ML models and retraining history."
-    },
-    "/users/{userId}/governance/registry/entries/{entryId}": {
-      "schema": "RegistryEntry",
-      "description": "Governed catalog of agents, tools, and MCP servers."
-    },
-    "/users/{userId}/publishing/substack/posts/{postId}": {
-      "schema": "SubstackPost",
-      "description": "Newsletter drafts and published content for Substack."
-    },
-    "/users/{userId}/publishing/substack/config": {
-      "schema": "SubstackConfig",
-      "description": "Substack extension configuration."
+    "/users/{userId}/settings/nexus": {
+      "schema": "NexusSettings",
+      "description": "Viabhron Nexus configuration."
     },
     "/users/{userId}/fiscal/x402/config": {
       "schema": "X402Config",
-      "description": "Sovereign x402 Payment Gateway configuration."
+      "description": "x402 Payment Gateway settings."
     },
     "/users/{userId}/fiscal/x402/transactions/{transactionId}": {
       "schema": "X402Transaction",
-      "description": "History of autonomous x402 payments and consumption-based billing."
+      "description": "Autonomous billing history."
     },
     "/users/{userId}/security/identity/8004/{identityId}": {
       "schema": "SovereignIdentity",
-      "description": "On-chain agent identities (8004 protocol)."
+      "description": "On-chain agent passports."
     },
     "/users/{userId}/security/identity/config": {
       "schema": "MultiChainConfig",
-      "description": "Multi-chain bridge and identity configuration."
+      "description": "Identity registrar and chain settings."
+    },
+    "/users/{userId}/vaa/chats/{chatId}": {
+      "schema": "Chat",
+      "description": "Vaa client chat sessions."
+    },
+    "/users/{userId}/vaa/chats/{chatId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Messages within a Vaa chat."
+    },
+    "/users/{userId}/vaa/filters/{filterId}": {
+      "schema": "FilterConfig",
+      "description": "Vaa client filter preferences."
+    },
+    "/users/{userId}/agents/{agentId}": {
+      "schema": "Agent",
+      "description": "Sovereign agents belonging to the user."
+    },
+    "/users/{userId}/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "System-wide notifications."
+    },
+    "/users/{userId}/watchers/{watcherId}": {
+      "schema": "Watcher",
+      "description": "Background event monitors."
+    },
+    "/users/{userId}/creative/assets/{assetId}": {
+      "schema": "VisualAsset",
+      "description": "Sovereign Vision Lab assets."
+    },
+    "/users/{userId}/nexus/translations/{translationId}": {
+      "schema": "TranslationMetadata",
+      "description": "Linguistic Bridge translation cache."
+    },
+    "/users/{userId}/vine/hardening/{branchId}": {
+      "schema": "BranchHardeningStatus",
+      "description": "Autonomy status for distributed Vine branches."
+    },
+    "/users/{userId}/governance/registry/{entryId}": {
+      "schema": "AgentRegistryEntry",
+      "description": "Accredited agents in the Sovereign Federated Registry."
+    },
+    "/users/{userId}/efficiency/substrate/{branchId}": {
+      "schema": "SubstrateProfile",
+      "description": "Hardware optimization profiles for local branches."
+    },
+    "/users/{userId}/forge/verification/{reportId}": {
+      "schema": "VerificationReport",
+      "description": "Code verification reports from the SVL auditor."
+    },
+    "/users/{userId}/kernel/events/{eventId}": {
+      "schema": "SystemEvent",
+      "description": "System-wide events published to the SEB."
+    },
+    "/users/{userId}/kernel/subscriptions/{subId}": {
+      "schema": "EventSubscription",
+      "description": "Agent subscriptions to event topics."
+    },
+    "/users/{userId}/efficiency/dispatch/mandates/{mandateId}": {
+      "schema": "MissionMandate",
+      "description": "Pre-signed mandates for remote branch control."
+    },
+    "/users/{userId}/efficiency/dispatch/sessions/{sessionId}": {
+      "schema": "DispatchSession",
+      "description": "Active and historical dispatch sessions."
+    },
+    "/users/{userId}/memory/rooms/{roomId}": {
+      "schema": "MemoryRoom",
+      "description": "Spatial rooms in the Memory Palace."
+    },
+    "/users/{userId}/memory/rooms/{roomId}/loci/{locusId}": {
+      "schema": "MemoryLocus",
+      "description": "Specific loci within a memory room."
+    },
+    "/users/{userId}/memory/logs/{logId}": {
+      "schema": "VerbatimLog",
+      "description": "Verbatim logs stored in the Memory Palace."
+    },
+    "/users/{userId}/security/privacy/mandates/{mandateId}": {
+      "schema": "PrivacyMandate",
+      "description": "Global privacy mandates for AI providers."
+    },
+    "/users/{userId}/security/privacy/logs/{logId}": {
+      "schema": "ProxyLog",
+      "description": "Logs of intercepted AI provider requests."
+    },
+    "/users/{userId}/security/model/policies/{policyId}": {
+      "schema": "ModelSecurityPolicy",
+      "description": "Security policies for model hatching and execution."
+    },
+    "/users/{userId}/governance/workforce/roles/{roleId}": {
+      "schema": "WorkforceRole",
+      "description": "Job descriptions for the AI workforce."
+    },
+    "/users/{userId}/governance/workforce/kpis/{kpiId}": {
+      "schema": "AgentKPI",
+      "description": "Performance metrics for autonomous agents."
+    },
+    "/users/{userId}/governance/workforce/payroll/{payrollId}": {
+      "schema": "AgentPayroll",
+      "description": "Metabolic budgets for the AI workforce."
+    },
+    "/users/{userId}/kernel/engines/configs/{engineId}": {
+      "schema": "EngineConfig",
+      "description": "Computational engine configurations (SEO)."
+    },
+    "/users/{userId}/kernel/engines/sessions/{sessionId}": {
+      "schema": "EngineSession",
+      "description": "Active and historical engine sessions."
+    },
+    "/users/{userId}/efficiency/linguistics/bases/{baseId}": {
+      "schema": "LinguisticBase",
+      "description": "GDrive-backed linguistic substrates (SLE)."
+    },
+    "/users/{userId}/efficiency/linguistics/corrections/{correctionId}": {
+      "schema": "TranslationCorrection",
+      "description": "Linguistic refinement logs and proposals."
+    },
+    "/users/{userId}/security/web_shield/handshakes/{handshakeId}": {
+      "schema": "WebIdentityHandshake",
+      "description": "External agent accreditation (ANS/Web Bot Auth)."
+    },
+    "/users/{userId}/security/web_shield/mandates/{mandateId}": {
+      "schema": "CrawlMandate",
+      "description": "AI crawl control policies for sovereign assets."
+    },
+    "/users/{userId}/efficiency/quantum/simulations/{simId}": {
+      "schema": "QuantumSimulation",
+      "description": "Quantum simulation missions (SQS)."
+    },
+    "/users/{userId}/efficiency/quantum/cascade/{logicId}": {
+      "schema": "CascadeLogic",
+      "description": "Cascade error-correction configurations."
+    },
+    "/users/{userId}/efficiency/swarm/simulations/{simId}": {
+      "schema": "SwarmSimulation",
+      "description": "Massive agent swarm simulations (SSS)."
+    },
+    "/users/{userId}/efficiency/swarm/agents/{agentId}": {
+      "schema": "SwarmAgent",
+      "description": "Micro-agents within a swarm simulation."
+    },
+    "/users/{userId}/efficiency/swarm/forecasts/{forecastId}": {
+      "schema": "NarrativeForecast",
+      "description": "Narrative reports on emergent social patterns."
     }
   }
 }

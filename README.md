@@ -25,11 +25,15 @@ Viabhron is designed to be your private "Everything App." Its mission is to perf
 ### 1. The Office (The Engine)
 The backend runs on **Google Cloud Run**, providing a 24/7 environment for agents to operate. It is the "building" where your AI workers live and perform tasks even when you are away.
 *   **Substrate Optimization**: Powered by **TurboQuant**, implementing 3-bit KV cache compression for 8x faster attention scoring and 60% reduced memory footprint, enabling massive context windows on standard cloud hardware.
+*   **Engine Orchestration (SEO)**: Manages the on-demand lifecycle of high-performance computational cores (3D, Physics, Inference), ensuring metabolic efficiency by spinning up engines only when needed.
+*   **Linguistic Evolution (SLE)**: A self-improving translation engine that learns from mistakes and uses Google Drive as a persistent, user-controlled linguistic substrate.
+*   **Quantum Substrate (SQS)**: An optional, default-off engine utilizing AI-based error correction (Cascade logic) to simulate qubits and filter "Reasoning Noise" from agent missions.
 
 ### 2. The Desk (The Dual-State UI)
 The frontend is your "window" into the office. It is a **Generative UI** that "projects" the substrate's text-driven data into a functional, interactive workspace.
 *   **The Celestial Interface (Vaa)**: A premium, WhatsApp-inspired "Celestial Dark" client that treats AI agents as "Star Nodes" (contacts). It is the user-friendly face of the OS, optimized for mobile and PWA deployment.
-*   **The Machine Room**: An industrial, terminal-core interface for deep system tuning and security management.
+*   **The Machine Room (Browser UI)**: An industrial, terminal-core interface for deep system tuning and security management. This acts as the **Immutable Kernel**, a non-deletable recovery layer.
+*   **The Portal Toggle**: A seamless switching mechanism. Tapping the "VhatsAppeningAi" title in Vaa morphs the UI into the Machine Room, while the "Viabhron" logo (or "Ascend" button) in the Machine Room collapses it back to Vaa.
 *   **The Projection**: The UI is a designed experience, not just a report. It can be reconfigured by the **Head Agent** via natural language prompts.
 *   **Core Skeleton**: The **Workflow Canvas** and **Sandbox** are built-in infrastructure, providing a visual orchestrator and a virtual computer environment for all agents.
 
@@ -78,6 +82,9 @@ Viabhron formalizes AI workflows into **Standard Operating Procedures (SOPs)**. 
 *   **Intelligence Manufacturing**: The **Mistral Sovereign Forge** allows enterprises to build custom, "frontier-grade" AI models using proprietary data from the Neural Archive, ensuring 100% data sovereignty.
 *   **Physics-Aware Creative**: **Project VOID** enables professional-grade video object erasure and scene manipulation, respecting physical interactions like collisions and splashes.
 *   **Visual Intelligence**: **MolmoWeb** integration allows agents to navigate the web by "seeing" screenshots, ensuring 100% success on dynamic sites without leaking data to external scrapers.
+*   **Workforce Management (SWM)**: Manages autonomous agents as a structured "AI Workforce" with defined roles, performance metrics (KPIs), and metabolic payrolls.
+*   **Swarm Intelligence (SSS)**: The **Sovereign Swarm Simulator** models emergent social patterns in massive agent populations (up to 1 million), providing narrative strategic forecasts for the Chairman.
+*   **Sovereign Web Shield (SWS)**: Bridges internal agent identities to external standards (ANS, Web Bot Auth) and enforces AI crawl control on sovereign assets.
 
 ### 11. The Viabhronic Loader (The Sovereign App Store)
 The **Viabhronic Loader** is a PWA-based "Super App" shell (inspired by the J2ME Loader) that acts as your private application launcher.

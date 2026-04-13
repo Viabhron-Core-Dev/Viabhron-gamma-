@@ -11,7 +11,11 @@ import {
   Plus,
   Terminal,
   Search,
-  Shield
+  Shield,
+  CheckCircle,
+  AlertCircle,
+  Activity,
+  ShieldCheck
 } from 'lucide-react';
 
 interface FileEntry {
@@ -33,6 +37,8 @@ export const Forge: React.FC<ForgeProps> = ({ isLockdown, checkSovereignProcedur
   ]);
   const [activeFileIndex, setActiveFileIndex] = useState(0);
   const [blockMessage, setBlockMessage] = useState<string | null>(null);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verificationStatus, setVerificationStatus] = useState<'idle' | 'passed' | 'failed'>('idle');
 
   const activeFile = files[activeFileIndex];
 
@@ -48,6 +54,17 @@ export const Forge: React.FC<ForgeProps> = ({ isLockdown, checkSovereignProcedur
     }
     // Proceed with action (simulated)
     console.log(`Executing ${actionName} on ${activeFile.name}`);
+  };
+
+  const handleVerify = () => {
+    setIsVerifying(true);
+    setVerificationStatus('idle');
+    
+    // Simulate SVL Auditor Agent processing
+    setTimeout(() => {
+      setIsVerifying(false);
+      setVerificationStatus('passed');
+    }, 2000);
   };
 
   return (
@@ -100,6 +117,14 @@ export const Forge: React.FC<ForgeProps> = ({ isLockdown, checkSovereignProcedur
             >
               <Play className="w-3 h-3" />
               Run Test
+            </button>
+            <button 
+              onClick={handleVerify}
+              disabled={isLockdown || isVerifying}
+              className={`flex items-center gap-2 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[10px] font-bold transition-all shadow-lg shadow-emerald-600/20 ${isLockdown || isVerifying ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              <ShieldCheck className={`w-3 h-3 ${isVerifying ? 'animate-spin' : ''}`} />
+              {isVerifying ? 'Verifying...' : 'Verify Code'}
             </button>
           </div>
         </div>
@@ -172,6 +197,45 @@ export const Forge: React.FC<ForgeProps> = ({ isLockdown, checkSovereignProcedur
             <Search className="w-3.5 h-3.5" />
             Refactor Code
           </button>
+        </div>
+
+        <div className="space-y-3">
+          <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Verification Loop</h3>
+          <div className={`p-3 rounded-xl border transition-all ${
+            verificationStatus === 'passed' ? 'bg-emerald-500/10 border-emerald-500/20' : 
+            verificationStatus === 'failed' ? 'bg-red-500/10 border-red-500/20' : 
+            'bg-gray-950 border-white/5'
+          }`}>
+            <div className="flex items-center gap-2 mb-2">
+              <Activity className={`w-3 h-3 ${isVerifying ? 'text-blue-400 animate-pulse' : 'text-gray-500'}`} />
+              <span className="text-[9px] font-bold text-white uppercase tracking-widest">Auditor Status</span>
+            </div>
+            <div className="flex items-center gap-2">
+              {verificationStatus === 'passed' ? (
+                <>
+                  <CheckCircle className="w-3 h-3 text-emerald-400" />
+                  <span className="text-[10px] text-emerald-400 font-bold uppercase">Accredited</span>
+                </>
+              ) : verificationStatus === 'failed' ? (
+                <>
+                  <AlertCircle className="w-3 h-3 text-red-400" />
+                  <span className="text-[10px] text-red-400 font-bold uppercase">Rejected</span>
+                </>
+              ) : (
+                <>
+                  <div className="w-1.5 h-1.5 rounded-full bg-gray-700" />
+                  <span className="text-[10px] text-gray-500 font-bold uppercase tracking-tighter">Waiting for Input</span>
+                </>
+              )}
+            </div>
+            {verificationStatus === 'passed' && (
+              <div className="mt-2 pt-2 border-t border-emerald-500/10 text-[8px] text-emerald-500/60 leading-tight">
+                Lint: OK<br />
+                Compile: OK<br />
+                Security: Verified
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

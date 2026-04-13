@@ -1,6 +1,6 @@
 {
   "name": "Viabhron",
-  "description": "A modular AI Operating System (MAOS) with a persistent agentic office, a generative UI desk, and a secure tent-deployment model. Now featuring Luma Uni-1, Trustpilot AI Visibility, Hardened Flowise AI, a Global Security Radar, an Ethical Sentinel, a Parallel Forge, a Corporate Governance Hub, a Sovereign I/O Bridge, an Agent Registry, Substack Publishing, x402 Payment Gateway, and Sovereign Identity Bridge.",
+  "description": "A private, sovereign Multi-Agent Operating System (MAOS) with autonomous x402 payments, 8004 digital passports, and a persistent agentic office.",
   "requestFramePermissions": [
     "camera",
     "microphone",

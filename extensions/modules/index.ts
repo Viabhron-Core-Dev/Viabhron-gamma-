@@ -1,4 +1,4 @@
-import { Terminal, Activity, Bug, Shield, Plus, Palette, Library } from 'lucide-react';
+import { Terminal, Activity, Bug, Shield, Plus, Palette, Library, Music, LayoutGrid } from 'lucide-react';
 import { Extension } from '../../src/types';
 
 export const agentTerminalModule: Extension = { 
@@ -86,7 +86,37 @@ export const viabhronNexusModule: Extension = {
   name: 'Viabhron Nexus',
   category: 'module',
   icon: Library,
-  status: 'inactive',
+  status: 'active',
   source: 'inbuilt',
   description: 'Private Library Substrate for AI narrative synthesis and data trading'
+};
+
+export const symphonyModule: Extension = {
+  id: 't13',
+  name: 'Symphony Orchestrator',
+  category: 'module',
+  icon: Music,
+  status: 'active',
+  source: 'inbuilt',
+  description: 'Autonomous AI-driven implementation runs based on Linear tickets.'
+};
+
+export const sovereignMonitorModule: Extension = {
+  id: 't14',
+  name: 'Sovereign Monitor',
+  category: 'module',
+  icon: Activity,
+  status: 'active',
+  source: 'inbuilt',
+  description: 'Event-driven background monitoring and reactive intelligence'
+};
+
+export const sovereignMemoryPalaceModule: Extension = {
+  id: 't15',
+  name: 'Memory Palace',
+  category: 'module',
+  icon: LayoutGrid,
+  status: 'active',
+  source: 'inbuilt',
+  description: 'Spatial-hierarchical long-term memory system'
 };

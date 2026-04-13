@@ -18,8 +18,50 @@ service cloud.firestore {
     // Fields:
     //   - id: string (required)
     //   - title: string (required)
-    //   - type: string (required, enum: chat, settings, discovery)
+    //   - type: string (required)
+    //   - status: string (required, enum: active, shelved, archived)
+    //   - agentId: string (optional)
     //   - createdAt: timestamp
+    //
+    // Collection: users/{userId}/vaa/chats
+    // Document ID: {chatId}
+    // Fields:
+    //   - id: string (required)
+    //   - name: string (optional)
+    //   - type: string (required, enum: direct, council, individual, workflow, debate, agent, gmail, sentinel)
+    //   - filterCategory: string (optional)
+    //   - lastMessage: string (optional)
+    //   - updatedAt: timestamp
+    //
+    // Collection: users/{userId}/vaa/filters
+    // Document ID: {filterId}
+    // Fields:
+    //   - id: string (required)
+    //   - label: string (required)
+    //   - active: bool (required)
+    //   - order: int (required)
+    //
+    // Collection: users/{userId}/agents
+    // Document ID: {agentId}
+    // Fields:
+    //   - id: string (required)
+    //   - name: string (required)
+    //   - role: string (required, enum: head, executive, contractor, consultant, specialized)
+    //   - provider: string (required)
+    //   - model: string (required)
+    //   - status: string (required, enum: active, inactive, error)
+    //   - color: string (required)
+    //   - lastActive: timestamp
+    //
+    // Collection: users/{userId}/notifications
+    // Document ID: {notificationId}
+    // Fields:
+    //   - id: string (required)
+    //   - title: string (required)
+    //   - message: string (required)
+    //   - type: string (required, enum: security, info, warning, error, system)
+    //   - read: bool (required)
+    //   - timestamp: timestamp
     //
     // Collection: users/{userId}/tabs/{tabId}/messages
     // Document ID: {messageId}
@@ -87,6 +129,44 @@ service cloud.firestore {
     //   - active: bool (required)
     //   - createdAt: timestamp
     //
+    // Collection: users/{userId}/kernel/engines/configs
+    // Document ID: {engineId}
+    // Fields:
+    //   - id: string (required)
+    //   - name: string (required)
+    //   - type: string (required, enum: 3d, physics, inference, quantum, linguistic)
+    //   - status: string (required, enum: dormant, active, hibernating)
+    //   - metabolicLoad: number (required)
+    //
+    // Collection: users/{userId}/efficiency/linguistics/bases
+    // Document ID: {baseId}
+    // Fields:
+    //   - id: string (required)
+    //   - gdriveId: string (required)
+    //   - language: string (required)
+    //   - version: string (required)
+    //   - lastPatched: timestamp
+    //
+    // Collection: users/{userId}/security/web_shield/handshakes
+    // Document ID: {handshakeId}
+    // Fields:
+    //   - id: string (required)
+    //   - agentId: string (required)
+    //   - ansName: string (required)
+    //   - webBotAuthToken: string (required)
+    //   - issuedAt: timestamp
+    //   - expiresAt: timestamp
+    //   - status: string (required, enum: active, revoked, expired)
+    //
+    // Collection: users/{userId}/efficiency/swarm/simulations
+    // Document ID: {simId}
+    // Fields:
+    //   - id: string (required)
+    //   - name: string (required)
+    //   - contextId: string (required)
+    //   - agentCount: number (required)
+    //   - status: string (required, enum: initializing, running, completed, failed)
+    //
     // ===============================================================
 
     // ===============================================================
@@ -106,8 +186,46 @@ service cloud.firestore {
     }
 
     function isValidTab(data) {
-      return data.keys().hasAll(['id', 'title', 'type']) &&
-             data.type in ['chat', 'settings', 'discovery'];
+      return data.keys().hasAll(['id', 'title', 'type', 'status']) &&
+             data.id is string && data.id.size() < 128 &&
+             data.title is string && data.title.size() < 100 &&
+             data.type is string && data.type.size() < 50 &&
+             data.status in ['active', 'shelved', 'archived'];
+    }
+
+    function isValidChat(data) {
+      return data.keys().hasAll(['id', 'type', 'updatedAt']) &&
+             data.id is string && data.id.size() < 128 &&
+             data.type in ['direct', 'council', 'individual', 'workflow', 'debate', 'agent', 'gmail', 'sentinel'] &&
+             (!('name' in data) || (data.name is string && data.name.size() < 100)) &&
+             (!('filterCategory' in data) || (data.filterCategory is string && data.filterCategory.size() < 50));
+    }
+
+    function isValidFilter(data) {
+      return data.keys().hasAll(['id', 'label', 'active', 'order']) &&
+             data.id is string && data.id.size() < 128 &&
+             data.label is string && data.label.size() < 50 &&
+             data.active is bool &&
+             data.order is int;
+    }
+
+    function isValidAgent(data) {
+      return data.keys().hasAll(['id', 'name', 'role', 'provider', 'model', 'status']) &&
+             data.id is string && data.id.size() < 128 &&
+             data.name is string && data.name.size() < 100 &&
+             data.role in ['head', 'executive', 'contractor', 'consultant', 'specialized'] &&
+             data.provider is string && data.provider.size() < 50 &&
+             data.model is string && data.model.size() < 100 &&
+             data.status in ['active', 'inactive', 'error'];
+    }
+
+    function isValidNotification(data) {
+      return data.keys().hasAll(['id', 'title', 'message', 'type', 'read', 'timestamp']) &&
+             data.id is string && data.id.size() < 128 &&
+             data.title is string && data.title.size() < 100 &&
+             data.message is string && data.message.size() < 1000 &&
+             data.type in ['security', 'info', 'warning', 'error', 'system'] &&
+             data.read is bool;
     }
 
     function isValidMessage(data) {
@@ -144,6 +262,56 @@ service cloud.firestore {
       return data.keys().hasAll(['id', 'name', 'naturalLanguage', 'type', 'urgencyLevel', 'active', 'createdAt']) &&
              data.type in ['security', 'operational', 'fiscal'] &&
              data.urgencyLevel in ['standard', 'critical'];
+    }
+
+    function isValidEngineConfig(data) {
+      return data.keys().hasAll(['id', 'name', 'type', 'status', 'metabolicLoad']) &&
+             data.type in ['3d', 'physics', 'inference', 'quantum', 'linguistic'] &&
+             data.status in ['dormant', 'active', 'hibernating'];
+    }
+
+    function isValidLinguisticBase(data) {
+      return data.keys().hasAll(['id', 'gdriveId', 'language', 'version', 'lastPatched', 'ruleCount']);
+    }
+
+    function isValidWebHandshake(data) {
+      return data.keys().hasAll(['id', 'agentId', 'ansName', 'webBotAuthToken', 'issuedAt', 'expiresAt', 'status']) &&
+             data.status in ['active', 'revoked', 'expired'];
+    }
+
+    function isValidCrawlMandate(data) {
+      return data.keys().hasAll(['id', 'domain', 'allowCrawl', 'agentWhitelist', 'updatedAt']);
+    }
+
+    function isValidSwarmSim(data) {
+      return data.keys().hasAll(['id', 'name', 'contextId', 'agentCount', 'status', 'startedAt']) &&
+             data.status in ['initializing', 'running', 'completed', 'failed'];
+    }
+
+    function isValidNarrativeForecast(data) {
+      return data.keys().hasAll(['id', 'simulationId', 'authorAgentId', 'content', 'emergentPatterns', 'timestamp']);
+    }
+
+    function isValidWorkforceRole(data) {
+      return data.keys().hasAll(['id', 'title', 'description', 'clearanceLevel', 'metabolicCeiling']);
+    }
+
+    function isValidAgentKPI(data) {
+      return data.keys().hasAll(['id', 'agentId', 'roleId', 'metricName', 'targetValue', 'currentValue', 'unit', 'lastUpdated']);
+    }
+
+    function isValidAgentPayroll(data) {
+      return data.keys().hasAll(['id', 'agentId', 'monthlyTokenLimit', 'tokensConsumed', 'creditBalance', 'currency', 'status']) &&
+             data.status in ['active', 'paused'];
+    }
+
+    function isValidQuantumSim(data) {
+      return data.keys().hasAll(['id', 'missionId', 'qubitCount', 'cascadeEnabled', 'errorRateReduction', 'status', 'startedAt']) &&
+             data.status in ['running', 'completed', 'failed'];
+    }
+
+    function isValidCascadeLogic(data) {
+      return data.keys().hasAll(['id', 'targetMissionId', 'correctionDepth', 'noiseThreshold', 'efficiencyGain']);
     }
 
     // ===============================================================
@@ -203,6 +371,90 @@ service cloud.firestore {
         allow create: if isOwner(userId) && isValidSecurityRule(request.resource.data);
         allow update: if isOwner(userId) && isValidSecurityRule(request.resource.data);
         allow delete: if isOwner(userId);
+      }
+
+      match /vaa/chats/{chatId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidChat(request.resource.data);
+        allow delete: if isOwner(userId);
+
+        match /messages/{messageId} {
+          allow read: if isOwner(userId);
+          allow create: if isOwner(userId) && isValidMessage(request.resource.data);
+        }
+      }
+
+      match /vaa/filters/{filterId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidFilter(request.resource.data);
+        allow delete: if isOwner(userId);
+      }
+
+      match /agents/{agentId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidAgent(request.resource.data);
+        allow delete: if isOwner(userId);
+      }
+
+      match /notifications/{notificationId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidNotification(request.resource.data);
+        allow delete: if isOwner(userId);
+      }
+
+      match /kernel/engines/configs/{engineId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidEngineConfig(request.resource.data);
+      }
+
+      match /efficiency/linguistics/bases/{baseId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidLinguisticBase(request.resource.data);
+      }
+
+      match /security/web_shield/handshakes/{handshakeId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidWebHandshake(request.resource.data);
+      }
+
+      match /security/web_shield/mandates/{mandateId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidCrawlMandate(request.resource.data);
+      }
+
+      match /efficiency/swarm/simulations/{simId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidSwarmSim(request.resource.data);
+      }
+
+      match /efficiency/swarm/forecasts/{forecastId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidNarrativeForecast(request.resource.data);
+      }
+
+      match /governance/workforce/roles/{roleId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidWorkforceRole(request.resource.data);
+      }
+
+      match /governance/workforce/kpis/{kpiId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidAgentKPI(request.resource.data);
+      }
+
+      match /governance/workforce/payroll/{payrollId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidAgentPayroll(request.resource.data);
+      }
+
+      match /efficiency/quantum/simulations/{simId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidQuantumSim(request.resource.data);
+      }
+
+      match /efficiency/quantum/cascade/{logicId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidCascadeLogic(request.resource.data);
       }
     }
   }
