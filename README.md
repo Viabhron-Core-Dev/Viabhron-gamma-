@@ -300,4 +300,6 @@ Viabhron is a sovereign orchestrator that integrates and builds upon the incredi
 ---
 *Built with privacy, modularity, and persistence at its core.*
 
+**Mirror Repository:** [Viabhron-by-vian](https://github.com/Viabhron-Core-Dev/Viabhron-by-vian)
+
 **License:** This project is licensed under the **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)** license. This allows for forking and community improvement while ensuring the project remains non-commercial and attributed to the original creator. See the [LICENSE](LICENSE) file for details.

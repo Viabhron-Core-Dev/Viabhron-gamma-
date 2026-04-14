@@ -18,12 +18,7 @@ import {
   Activity,
   Bug,
   Shield,
-  RefreshCw,
-  ShoppingCart,
-  Box,
-  MessageSquare,
-  Briefcase,
-  Coins
+  RefreshCw
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Extension, ExtensionCategory, UIMode } from '../../types';
@@ -45,24 +40,9 @@ export const ExtensionStore: React.FC<ExtensionStoreProps> = ({ onInstall, insta
     { id: 'module-metrics', name: 'System Metrics', category: 'module', icon: Activity, status: 'active', source: 'inbuilt', description: 'Real-time performance and resource monitoring' },
     { id: 'module-simulation', name: 'Simulation Engine', category: 'module', icon: Bug, status: 'active', source: 'inbuilt', description: 'Developer suite for agent simulation and testing' },
     { id: 'module-governance', name: 'Governance Toolkit', category: 'module', icon: Shield, status: 'active', source: 'inbuilt', description: 'Microsoft-powered agent policy and identity engine' },
-    { id: 'module-web-shield', name: 'Sovereign Web Shield', category: 'module', icon: Shield, status: 'inactive', source: 'inbuilt', description: 'External agent accreditation (ANS) and Cloudflare crawl control' },
     { id: 'module-charts', name: 'Interactive Artifacts', category: 'module', icon: Layout, status: 'inactive', source: 'inbuilt', description: 'Claude-style interactive charts and visual data artifacts' },
     { id: 'module-ui-demo', name: 'UI Prototype Engine', category: 'module', icon: Globe, status: 'inactive', source: 'inbuilt', description: 'Lovable-style rapid UI prototyping and live demos' },
     { id: 'module-code-viz', name: 'Code-to-Image', category: 'module', icon: Zap, status: 'inactive', source: 'inbuilt', description: 'Generate high-quality diagrams and images directly from code' },
-    { id: 'engine-3d-spatial', name: '3D Spatial Engine', category: 'engine', icon: Network, status: 'inactive', source: 'inbuilt', description: 'High-performance 3D rendering substrate for the Memory Palace' },
-    { id: 'engine-linguistic-evolution', name: 'Linguistic Engine', category: 'engine', icon: Globe, status: 'inactive', source: 'inbuilt', description: 'Self-improving translation substrate using GDrive-backed data' },
-    { id: 'engine-quantum-substrate', name: 'Quantum Simulation Engine', category: 'engine', icon: Zap, status: 'inactive', source: 'inbuilt', description: 'Optional Cascade-enhanced quantum simulation substrate (Default: OFF)' },
-    { id: 'engine-swarm-simulator', name: 'Swarm Simulator', category: 'engine', icon: Network, status: 'inactive', source: 'inbuilt', description: 'Massive agent social dynamics engine using OASIS substrate' },
-    { id: 'engine-autogen', name: 'AutoGen Substrate', category: 'engine', icon: Zap, status: 'inactive', source: 'inbuilt', description: 'Multi-agent conversation engine for complex problem-solving' },
-    { id: 'engine-metagpt', name: 'MetaGPT Substrate', category: 'engine', icon: Zap, status: 'inactive', source: 'inbuilt', description: 'Software company simulation for hatching technical departments' },
-    { id: 'engine-memgpt', name: 'MemGPT Substrate', category: 'engine', icon: Network, status: 'inactive', source: 'inbuilt', description: 'Infinite context and long-term memory management' },
-    { id: 'engine-skyvern', name: 'Skyvern Substrate', category: 'engine', icon: Globe, status: 'inactive', source: 'inbuilt', description: 'Visual web navigation muscle for non-API sites' },
-    { id: 'engine-strategy', name: 'Strategy Substrate', category: 'engine', icon: Activity, status: 'inactive', source: 'inbuilt', description: 'High-reasoning engine for McKinsey-style competitive intelligence' },
-    { id: 'engine-shopping', name: 'Shopping Substrate', category: 'engine', icon: ShoppingCart, status: 'inactive', source: 'inbuilt', description: 'Visual intelligence and autonomous navigation for real-time procurement' },
-    { id: 'engine-synthesis', name: 'Interactive Synthesis Substrate', category: 'engine', icon: Box, status: 'inactive', source: 'inbuilt', description: 'Live 3D models, interactive charts, and physics simulations' },
-    { id: 'engine-communication', name: 'Communication Substrate', category: 'engine', icon: MessageSquare, status: 'inactive', source: 'inbuilt', description: 'Intelligence layer for bridging external meeting platforms via MCP' },
-    { id: 'engine-enterprise', name: 'Enterprise Substrate', category: 'engine', icon: Briefcase, status: 'inactive', source: 'inbuilt', description: 'Business intelligence layer for bridging external CRM/ERP platforms via MCP' },
-    { id: 'engine-liquidity', name: 'Liquidity Substrate', category: 'engine', icon: Coins, status: 'inactive', source: 'inbuilt', description: 'Cross-chain execution layer for autonomous capital rebalancing and intents' },
   ];
 
   const handleImport = async (e: React.FormEvent) => {
@@ -154,7 +134,7 @@ export const ExtensionStore: React.FC<ExtensionStoreProps> = ({ onInstall, insta
           <div className="flex items-center justify-between">
             <h2 className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em]">Available Extensions</h2>
             <div className="flex gap-2">
-              {['All', 'Connectors', 'Skills', 'Tools', 'MCP', 'Modules', 'Engines'].map(cat => (
+              {['All', 'Connectors', 'Skills', 'Tools', 'MCP', 'Modules'].map(cat => (
                 <button key={cat} className="px-3 py-1 bg-white/5 hover:bg-white/10 rounded-full text-[9px] font-bold text-gray-400 uppercase tracking-widest transition-all">
                   {cat}
                 </button>

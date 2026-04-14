@@ -45,51 +45,6 @@ async function startServer() {
     res.json(pulses);
   });
 
-  // --- SOVEREIGN MONITOR SERVICE ---
-  // This service simulates background monitoring for HTTP targets
-  const activeMonitors = new Map<string, any>();
-
-  app.post("/api/monitor/start", (req, res) => {
-    const { id, name, target, condition, interval = 60000 } = req.body;
-    
-    if (activeMonitors.has(id)) {
-      clearInterval(activeMonitors.get(id).timer);
-    }
-
-    console.log(`[MONITOR] Starting watcher: ${name} on ${target}`);
-    
-    const timer = setInterval(async () => {
-      try {
-        // In a real implementation, we would use fetch to check the target
-        // and evaluate the condition. For now, we log the check.
-        console.log(`[MONITOR] Checking ${name}...`);
-        
-        // Simulate a trigger event for demonstration if target contains 'trigger'
-        if (target.includes('trigger')) {
-          console.log(`[MONITOR] TRIGGER MATCHED for ${name}!`);
-          // Here we would push a notification to Firestore
-        }
-      } catch (error) {
-        console.error(`[MONITOR] Error checking ${name}:`, error);
-      }
-    }, interval);
-
-    activeMonitors.set(id, { id, name, target, condition, timer });
-    res.json({ status: "started", id });
-  });
-
-  app.post("/api/monitor/stop", (req, res) => {
-    const { id } = req.body;
-    if (activeMonitors.has(id)) {
-      clearInterval(activeMonitors.get(id).timer);
-      activeMonitors.delete(id);
-      console.log(`[MONITOR] Stopped watcher: ${id}`);
-      res.json({ status: "stopped" });
-    } else {
-      res.status(404).json({ error: "Monitor not found" });
-    }
-  });
-
   // --- VITE MIDDLEWARE ---
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({

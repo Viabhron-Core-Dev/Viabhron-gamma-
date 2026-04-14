@@ -46,7 +46,10 @@ A structured registry that manages the capabilities and power levels of the OS.
             *   **Consultant Knockout Window**: A dedicated, high-density workspace for configuring edge logic (Workers, R2, Tunnels).
             *   **Resident AI Oracle**: A built-in chatbot within the knockout window that provides pre-configured, Viabhron-optimized code and step-by-step setup guidance.
         *   **Branches & Mission (Distributed Nodes)**: A management layer for the "Vine" architecture, allowing the OS to spread across multiple devices and clouds. [DONE]
-            *   **Sovereign Cells**: Individual branches that act as independent "Branch Offices" with their own local data and tasks.
+            *   **The Forest Hierarchy (The Leaf Ecosystem)**: A multi-tiered component architecture for intent-based expansion.
+                *   **SS Blocks (Sovereign Script Blocks)**: Fundamental, malleable units of intent.
+                *   **Organelles / Holons**: Grouped functional subunits.
+                *   **Cells**: Graftable mini-apps and specialized agent units that act as independent "Branch Offices."
             *   **Mission Scoping**: Branches are deployed with specific "Missions" (e.g., Research, Security, Coding) rather than the full OS kernel.
             *   **Resource Sharing (Internal Market)**: Branches can "Contract" tasks to each other based on available hardware firepower.
         *   **Gmail Sovereign Node (The Comms Relay)**: A specialized agentic node for managing multiple email identities through a single private interface. [DONE]
@@ -54,11 +57,15 @@ A structured registry that manages the capabilities and power levels of the OS.
             *   **Granular Permission Scoping**: Users choose between **Sentinel Mode** (Read-Only) and **Executive Mode** (Read/Write) for each account during late-binding setup.
             *   **Sovereign Sanitization**: The Resident AI automatically removes tracking pixels, suspicious links, and malicious payloads from incoming emails.
             *   **Sanitization Briefing**: The agent provides a small "Sanitization Report" (e.g., "Removed 2 tracking pixels and 1 suspicious link") for every processed email.
-        *   **Viabhronic Loader**: A PWA-based "Super App" shell (like a J2ME Loader) that hosts and toggles "Mini-Apps" or "Sovereign Gems". It provides a local, offline-first presence for your private tools. [DONE]
+        *   **Viabhronic Loader**: A PWA-based "Super App" shell (like a J2ME Loader) that hosts and toggles **MOSS** (mini-apps/games) or "Sovereign Gems". It provides a local, offline-first presence for your private tools. [DONE]
         *   **Sovereign Gems**: Private, agentic applications (similar to GPTs/Gems) built within the OS. They leverage the **SOP Registry** and **Neural Archive** to provide specialized intelligence without compromising privacy. [DONE]
-        *   **Sovereign Swarm Simulator (SSS)**: A social-dynamics engine for modeling emergent behavior in massive agent populations (up to 1 million agents). It processes real-world context to generate narrative strategic forecasts. [DONE]
         *   **Sovereign Creative Studio**: A visual IDE for orchestrating multi-step creative workflows via a spatial canvas.
             *   **Project VOID Integration**: Physics-aware video object erasure and scene manipulation, enabling professional-grade video editing within the private substrate.
+            *   **Sovereign Sound Forge**: A music generation tool for composing high-fidelity audio, loops, and cinematic scores.
+            *   **Sovereign Image Studio**: A basic image generation tool for rapid visual synthesis and asset creation.
+            *   **Sovereign Video Suite**: A basic video generation tool for short-form animation and cinematic sequences.
+            *   **The Sovereign Transmuter**: A specialized extension for importing web apps from GitHub and transmuting them into **MOSS** (Sovereign Script mini-apps/games).
+            *   **MOSS System**: A management layer for "MOSS" colonies, handling active growth, dormancy (Seed Vault), and re-hydration.
         *   **Corporate Kernel (Enterprise Automation)**: A high-clearance substrate for production-scale agentic deployments.
             *   **UiPath & AA Connectors**: Native integration for agents to operate as primary users of enterprise automation platforms.
             *   **Production-Scale Missions**: Enables the deployment of "Sovereign Cells" (branches) specifically for large-scale business logic (e.g., Finance Reconciliation, IT Support).
@@ -89,23 +96,25 @@ A structured registry that manages the capabilities and power levels of the OS.
         *   **Plugin Configuration**: Managed via the **Agent Settings** (3-dots menu) in the Chat interface. Supports per-plugin API keys and security toggles (e.g., Review Gate).
 *   **Policy Enforcement (Microsoft Governance)**: Runtime security policies that "Silent Block + Notify" actions violating the Chairman's rules.
 *   **Authority**: Only the **User (The Chairman)** and the **Head Agent (The Cloud Manager)** have the keys to the Toolbox.
+*   **The Cloud Manager (Sovereign Anchor)**: A Tiny LLM (e.g., MiniMax M2.7, Gemma, Llama-3-8B) running in an isolated container within the user's private cloud. It acts as the "Brain Stem" for routing, security, and managing external "Contractor" AI models.
 *   **Recipe Skills**: Artisanal blueprints that dictate the "Vibe," tone, and style of AI outputs.
 
 ### 1.3 The Agents (The Staff Hierarchy)
-The "Active Intelligence" that performs work within the office, managed by a **Model-Agnostic Orchestration System (Claude Code Rewrite)**.
+The "Active Intelligence" that performs work within the office, managed by a **Model-Agnostic Orchestration System**.
 
-1.  **Level 1: The Resident (Head Agent)** [DONE]
+1.  **Level 1: The Sovereign Anchor (Cloud Manager)** [DONE]
     *   **Status**: Permanent, "In-Office."
-    *   **Brain**: Tiny LLM (Gemma/Phi).
-    *   **Role**: The "Office Manager" who never leaves. Root Authority.
-2.  **Level 2: Executive Staff (Special Agents)** [DONE]
+    *   **Brain**: Tiny LLM (MiniMax M2.7, Gemma, Phi, Llama-3-8B).
+    *   **Role**: The "Sovereign Anchor" who never leaves. Root Authority. Acts as the firewall between the user's private data and external contractors. It runs in a dedicated, isolated container within the user's private cloud.
+    *   **Independence**: 100% company-independent compute.
+2.  **Level 2: Executive Staff (Resident Agents)** [DONE]
     *   **Status**: Permanent, "In-Office."
-    *   **Brain**: Larger LLMs (Llama 3.1 70b, etc.).
-    *   **Role**: For users who can afford more "Resident" power in their private cloud.
-3.  **Level 3: Contractors (Sub-Agents)** [DONE]
+    *   **Brain**: Larger LLMs (Llama 3.1 70b, etc.) running in the private cloud.
+    *   **Role**: Persistent staff members (The Guardian, The Librarian, The Coder) with long-term memory. They appear in the **Contact List** rather than as separate chat threads.
+3.  **Level 3: Contractors (Stateless Agents)** [DONE]
     *   **Status**: Temporary, "On-Call."
     *   **Brain**: API-based (Gemini, OpenAI, Anthropic).
-    *   **Role**: Hired via API keys for specific, heavy-lifting tasks.
+    *   **Role**: Hired via API keys for specific, heavy-lifting tasks. Access is revoked immediately after task completion.
 4.  **Level 4: Consultants (External Agents)** [DONE]
     *   **Status**: Cross-Platform.
     *   **Brain**: Third-party (e.g., Cursor 3 agents, specialized external AI, imported Claude Skills).
@@ -125,15 +134,9 @@ The "Active Intelligence" that performs work within the office, managed by a **M
 8.  **Specialized Roles (Optional)**
     *   **The Librarian**: An optional agent dedicated to monitoring Hugging Face and GitHub for new "Eggs" (models, tools, datasets) that align with the Chairman's interests and project needs. [DONE]
     *   **The Creative Director**: A specialized agent role for assembling and managing multi-step creative workflows on the Sovereign Creative Studio canvas.
-    *   **The Workforce Manager**: Manages the autonomous AI workforce, tracking KPIs and enforcing metabolic payrolls. [DONE]
-    *   **The Swarm Architect**: Orchestrates massive agent populations and social dynamics modeling using the OASIS substrate. [DONE]
-    *   **The Linguistic Engineer**: Manages the self-improving translation engine and GDrive-backed linguistic data. [DONE]
-    *   **The Strategic Analyst**: Synthesizes competitive intelligence into McKinsey-style reports using the Strategy Substrate. [DONE]
-    *   **The Procurement Officer**: Manages autonomous visual shopping and inventory using the Shopping Substrate. [DONE]
-    *   **The Synthesis Architect**: Builds live, interactive 3D models and simulations using the Interactive Synthesis Substrate. [DONE]
-    *   **The Sovereign Liaison**: Bridges internal agents with external communication platforms using the Communication Substrate. [DONE]
-    *   **The Enterprise Liaison**: Bridges internal agents with external business platforms using the Enterprise Substrate. [DONE]
-    *   **The DeFi Strategist**: Manages autonomous capital rebalancing and liquidity using the Liquidity Substrate. [DONE]
+    *   **The Sound Engineer**: A Level 3 Contractor role specialized in music theory, arrangement, and audio synthesis using the Sound Forge.
+    *   **The Visual Synthesizer**: A Level 3 Contractor role specialized in prompt engineering and visual composition for the Image Studio and Video Suite.
+    *   **The Transmuter**: A Level 3/4 Agent specialized in "Moss Seeding"—transmuting external code into Sovereign Script and auditing for privacy violations.
 
 ### 1.4 Protected Divisions (The Machine Room)
 The "Machine Room" contains the core infrastructure controls, isolated from agent interference.
@@ -142,7 +145,6 @@ The "Machine Room" contains the core infrastructure controls, isolated from agen
     *   **Agent Access**: **Read-Only**. Agents can follow rules but cannot modify them.
     *   **Natural Language Rule Builder**: The Chairman can describe rules in plain English; the OS translates them into hard technical blocks.
     *   **Emergency Lockdown (The Red Switch)**: A high-security protocol to instantly terminate all agent containers and revoke API keys.
-    *   **Sovereign Web Shield (SWS)**: Bridges internal agent identities to external standards (ANS, Web Bot Auth) and enforces AI crawl control on sovereign assets. [DONE]
     *   **Vine Revocation**: A global signal that propagates through the distributed network to instantly kill and wipe all "Orphan" or compromised branches.
     *   **Late-Binding Key Injection**: A security protocol where sensitive API tokens (e.g., Cloudflare, OpenAI) are only provided by the Chairman *after* the Resident AI has finished building and auditing the integration code.
     *   **Device Intelligence (Fingerprint MCP)**: A hardware-level security layer that verifies the Chairman's device identity. It prevents fraud and session hijacking by ensuring sensitive agent actions are only triggered from "Ratified Hardware."
@@ -154,37 +156,57 @@ The "Machine Room" contains the core infrastructure controls, isolated from agen
         *   **Turbo Mode**: Maximum speed and reasoning depth.
         *   **Eco Mode**: Maximum cost-efficiency.
         *   **Stealth Mode**: Minimal footprint and maximum privacy.
-    *   **Sovereign Engine Orchestrator (SEO)**: Manages the on-demand lifecycle of high-performance computational cores (3D, Physics, Inference), spinning them up only when needed. [DONE]
-        *   **Mature Engine Importation**: Capability to import and orchestrate mature substrates like **AutoGen** (Multi-Agent), **MetaGPT** (Software Co), **MemGPT** (Infinite Memory), **Skyvern** (Visual Web Navigation), the **Strategy Substrate** (McKinsey-style Analysis), the **Shopping Substrate** (Autonomous Procurement), the **Interactive Synthesis Substrate** (Live 3D/Data), the **Communication Substrate** (MCP Bridge), the **Enterprise Substrate** (Business Intelligence), and the **Liquidity Substrate** (Cross-Chain Intents).
-    *   **Sovereign Quantum Substrate (SQS)**: Optional, default-off engine using "Cascade" logic for error-corrected quantum simulation and agent reasoning. [DONE]
     *   **TurboQuant Substrate Patch**: A high-performance optimization layer that implements 3-bit KV cache compression. It provides 8x faster attention scoring and 60% reduced memory footprint without accuracy loss, enabling massive context windows on standard hardware.
 *   **Fiscal Division (The Treasury)**:
     *   **Role**: Manages the "Pooled Credit" allocation and task-based intelligence funding.
     *   **Pooled Treasury Protocol**: Replaces per-agent/per-seat fees with a unified credit pool. Credits are dynamically allocated to agents based on task priority and complexity.
     *   **Task-Based Intelligence**: Enables flat-fee agentic services (e.g., $0.25 Code Reviews, $0.10 Security Scans) to provide predictable operational costs.
     *   **Chairman Oversight**: The Chairman sets the "Burn Rate" and "Credit Ceiling" to prevent runaway costs.
-    *   **Sovereign Confidence Slider**: A user-adjustable security gradient (Paranoid, Balanced, Expedited) that dictates the level of autonomous financial ratification required.
     *   **User Choice in Management**: The Chairman can choose between the **Fiscal Comptroller** (automated) or the **Strategic Advisor** (human-in-the-loop) for treasury management.
 
 ---
 
-### 1.5 The Sovereign Hatchery (The Factory) [DONE]
-The Hatchery is the internal production line where the OS builds its own tools and expands its reach.
+### 1.5 The Sovereign Hatchery (The OpenClaw Factory) [DONE]
+The Hatchery is the internal production line where the OS builds its own tools and expands its reach, inspired by the **OpenClaw** self-building philosophy. It allows the Chairman to "hatch" new agents from open-source models found on **Hugging Face**.
+*   **Self-Building Skills**: Agents can autonomously create new capabilities (Skills) in Markdown or TypeScript based on user instructions, YouTube videos, or notes.
+*   **Agent Hatching (Open Intelligence)**: The OS can pull model weights from Hugging Face and containerize them as **Resident Agents** within the user's private cloud, ensuring they run in "Dark Brain" mode (private and air-gapped).
 *   **The Development Pipeline**:
-    1.  **Orchestration**: The Head Agent (Manager) delegates a task to the Coder Agent.
-    2.  **Dual-Track Choice**: The system defaults to **Sovereign Script (SS)** for simple tools and **Normal Code (TS/Node)** for complex logic. The Chairman can override this choice.
+    1.  **Synthesis**: The Librarian or Coder analyzes the input (e.g., a technical note).
+    2.  **Drafting**: The Coder generates a **Sovereign Skill** manifest.
     3.  **The Adversarial Audit (Triple-Check)**: Before installation, the script undergoes a security gauntlet:
         *   **Guardian Audit**: Internal stability and privacy scan.
         *   **Consultant Audit A**: External AI (e.g., OpenAI) logic and backdoor audit.
         *   **Consultant Audit B**: Second external AI (e.g., Claude) "Red Team" attack simulation.
+    4.  **Ratification**: The Chairman reviews the skill and "Hatches" it into the OS.
+*   **Metabolic Heartbeat (24/7 Autonomy)**:
+    *   The OS runs 24/7 with background heartbeats and cron jobs.
+    *   **Autonomous Improvements**: The system proactively optimizes its own SOPs and indexes data while the Chairman is offline.
+    *   **Pulse Logs**: Every heartbeat event is logged in the **Sentinel Feed** for later review.
 *   **Branch Hatching (The Vine Expansion)**:
     *   **Setup Kit Generation**: The Hatchery can generate "Kernel Seeds"—pre-configured Docker images or ISO files for new branches.
+    *   **Sovereign Seeds**: Specialized, installable PWA clients that act as independent "Branch Offices." The Vine allows the OS to spread across multiple devices while maintaining a single Sovereign identity.
     *   **Sovereign Seed Delivery**: The Chairman can choose between **Physical Hatching** (USB/Local Download) or **Encrypted Expedition** (Email/Link).
     *   **Sovereign Link Protocol**: Emailed seeds are delivered via a self-destructing, encrypted link that requires **Passkey (Biometric)** or **Phone Verification** to unlock, ensuring the seed is only "Sprouted" by the Chairman.
 *   **Audit Sensitivity Slider**: The Chairman can adjust the depth of checking (Paranoid, Standard, Experimental) to balance speed vs. security.
 *   **Malleable Block Library**: Newly created blocks are added to a library. They are not fixed; they can be adapted and reconfigured for future missions, with every change logged in the **Evolutionary Registry**.
 
-### 1.6 Minimum Viable Kernel (MVK) & Late-Binding Protocol [DONE]
+### 1.7 The Spore Protocol (Expeditionary Intelligence) [DONE]
+The Spore is a temporary, task-specific intelligence unit designed for high-risk, zero-trust missions on external hardware.
+*   **The Spore (Disposable Brain)**: Unlike the Vine (trusted branches), a Spore is an inherently untrusted "Expeditionary Unit" that runs from external storage (USB/SD Card).
+*   **Hardware Metabolism**: The Spore "hijacks" the host device's CPU/GPU for processing but keeps all data writes strictly on the external storage. It uses the host for "muscle" but keeps its "memory" in its own pocket.
+*   **Spore Sub-Manager**: A specialized Resident AI (e.g., "The Creative Lead") is installed on the Spore. It persists across missions on that specific drive, learning and optimizing for that task (e.g., Video Editing).
+*   **I/O Bulkhead**: Strictly defined import/export gates allow the Spore to pull raw files from the host and export finished products without allowing lateral movement or virus "climbing."
+*   **The Spore Harvest**: Upon return to the main Viabhron, the Spore's memory is mounted in a **Virtual Quarantine**. The Sentinel Agent audits the files (VirusTotal/Heuristics) before the Librarian "digests" the experience into the Neural Archive.
+
+### 1.8 The Black Box (Sovereign Seed Backup) [DONE]
+The Black Box is the "Seed of the Empire"—a full, physical backup of the user's entire digital existence.
+*   **The "Fold" Protocol**: The Cloud Manager creates a single, massive, encrypted archive containing the OS Kernel, all Resident Agents, the Neural Archive, and every Sovereign Skill.
+*   **Soul-Sync (Incremental)**: The Librarian manages incremental updates to the Black Box, pulsing only new "Deltas" (new memories/skills) to the drive to keep it current without a full re-download.
+*   **Ignition-Ready Audit**: The Librarian performs periodic "Dry Run" ignitions in a sandbox to ensure the Black Box is ready to wake up on a new host at any time.
+*   **Epoch Management**: The Librarian maintains "Epochs" (snapshots) of the OS state, allowing the Chairman to roll back the entire system to a previous stable state if a self-building agent goes rogue.
+*   **The Black Box Key**: Decryption is split between a user passphrase and a physical token (e.g., a file on the user's phone), ensuring the "Soul" cannot be unfolded if the drive is stolen.
+
+### 1.9 Minimum Viable Kernel (MVK) & Late-Binding Protocol [DONE]
 The MVK strategy ensures a low-friction onboarding experience by deferring complex configurations until they are strictly necessary.
 *   **The "Cold" State (Unbound)**: Extensions and divisions that require complex setup (e.g., Gmail OAuth, Cloudflare Tokens, GitHub Forge) are initially "Cold." They are visible in the UI but "Grayed Out" and non-functional.
 *   **The "Hot" State (Active)**: Once the Chairman provides the required "Ignition Keys" (API tokens/OAuth ratification), the node becomes "Hot" and is fully integrated into the OS kernel.
@@ -238,7 +260,7 @@ The UI is a **Thin Client / Remote Screen**—a window into the Virtual Computer
             *   **Intelligence Filter**: A prompt-based filter (managed in settings) that dictates the Resident AI's "Editorial Mandate" for the news feed.
         *   **Workflow**: A dedicated tab for the **Workflow Canvas**, providing direct access to visual orchestration of agentic logic.
         *   **HQ Extensions Vault (formerly Manager)**: A management area for the OS's capabilities.
-            *   **Unified Registry**: Mirrors the full Browser UI sidebar hierarchy (Connectors, Skills, Tools, MCP, Gaming, Testing, Extra Processor, Branches & Mission, Viabhronic Loader, Sovereign Gems).
+            *   **Unified Registry**: Mirrors the full Browser UI sidebar hierarchy (Connectors, Skills, Tools, MCP, Gaming, Testing, Extra Processor, Branches & Mission, Viabhronic Loader (MOSS), Sovereign Gems).
             *   **GitHub Hatchery Integration**: The `+` button in each section pulls directly from the `extensions/` folder of the official Viabhron GitHub repository.
             *   **Clean Industrial Design**: No "Marketplace" or "Build" buttons; it is a pure, collapsible registry of ratified power.
     *   **Star Nodes (Contacts)**: Agents are presented as "Contacts" in a messenger, enabling direct messaging and "Council" collaboration.
@@ -253,8 +275,8 @@ The UI is a **Thin Client / Remote Screen**—a window into the Virtual Computer
 *   **Confirmation Gates**: The "Safety Switch." The Chairman grants permission; the Head Agent manages the Toolbox. [DONE]
 *   **Agent Settings (The 3-Dots Menu)**: A dedicated configuration layer within the Chat interface for the Chairman to manage agent-specific logic, external plugins, and security gates without leaving the conversation. [DONE]
 *   **The "Hatchery" UI**: A specialized interface for importing GitHub repos or API endpoints to onboard new agents into the Staff Hierarchy. [DONE]
-*   **Viabhronic Loader**: A centralized launcher within the sidebar for managing the visibility and activation of Mini-Apps and Sovereign Gems. [DONE]
-*   **Mobile Desk (PWA Launcher)**: A lightweight, portable window into the OS. It hosts a collection of **Mini-Apps** (Notes, Auditor, Pulse) that can operate in two modes: [DONE]
+*   **Viabhronic Loader**: A centralized launcher within the sidebar for managing the visibility and activation of **MOSS** (mini-apps/games) and Sovereign Gems. [DONE]
+*   **Mobile Desk (PWA Launcher)**: A lightweight, portable window into the OS. It hosts a collection of **MOSS** (Notes, Auditor, Pulse) that can operate in two modes: [DONE]
     *   **Local Mode**: Private, offline-first data storage (e.g., local notes) with optional manual sync to the Sovereign Cloud.
     *   **Sovereign Mode**: Fully integrated cloud-powered apps that leverage the OS's agents and infrastructure in real-time.
 *   **Sovereign Multi-Terminal Substrate**: A management layer for **Accredited Clients** (Desktop, CLI, Browser Extension). It allows the Chairman to: [DONE]
@@ -301,12 +323,12 @@ The Chairman will have the choice between three modes of operation:
 *   **Sync-able Mode**: The OS can move between cloud and local substrates, synchronizing the Nervous System and Vault when a secure connection is established.
 *   **Hard-Gapped Mode**: Once transitioned to the Local Substrate, the OS is "Air-Gapped." It will never attempt to contact the cloud or external APIs, ensuring absolute physical isolation.
 
-### 6.4 The Physical Key: The USB Portable OS
+### 6.4 The Physical Key: The Spore & Black Box
 The ultimate vision for Viabhron is the **"Office on a Stick."**
-*   **Self-Contained Environment**: The entire OS—including the UI, the Local Brain (Models), the Local Vault (Data), and the Local Nervous System (State)—lives on a single, encrypted physical USB drive.
-*   **Plug-and-Play Sovereignty**: The Chairman can plug this drive into any computer (Mac, PC, Linux) and instantly boot their private, secure office.
+*   **The Spore (Expeditionary)**: A task-specific, zero-trust environment that "metabolizes" external hardware (USB/SD/Phone) for temporary missions.
+*   **The Black Box (Recovery)**: A full, encrypted "Soul Backup" of the entire OS, agents, and data for emergency restoration.
+*   **Plug-and-Play Sovereignty**: The Chairman can plug these drives into any computer (Mac, PC, Linux) or phone and instantly boot their private, secure office.
 *   **Zero Footprint**: When the drive is unplugged, no data, logs, or traces are left on the host machine. The "Tent" is folded and removed physically.
-*   **The Ultimate Backup**: A physical, air-gapped copy of the user's entire digital life that they can carry in their pocket.
 
 ---
 
@@ -369,7 +391,7 @@ As the global AI ecosystem evolves toward multi-agent orchestration and autonomo
 The OS is designed to grow with the user, starting as a "Lean Startup" and expanding into a "Digital State" only when necessary and explicitly ratified by the Chairman.
 
 ### 8.1 The Expansion Roadmap (Seed-to-Empire)
-*   **Phase 1: The Seed (Lean Startup)**: Direct command, minimal overhead, no complex governance.
+*   **Phase 1: The Seed (Lean Startup)**: Direct command, minimal overhead, no complex governance. The initial **Sovereign Client**.
 *   **Phase 2: The Growth (Mid-Sized Firm)**: Activation of specialized divisions (Security, Efficiency) via user ratification.
 *   **Phase 3: The Sovereign (Digital State)**: Full separation of powers, **Pooled Treasury Protocol** management, and Intelligence recon.
 
@@ -462,21 +484,21 @@ The OS is designed to grow with the user, starting as a "Lean Startup" and expan
 *   **Mission Promotion Requests**: A proactive protocol where **Branch Sub-Managers** analyze local hardware telemetry and request mission upgrades (e.g., "Promote to Coding Branch") via a Ratification Proposal in the Sentinel Feed.
 
 ### 11. Future Plans: The Sovereign Shortcut Protocol (Mobile Integration)
-The "J2ME Loader" evolution for mobile devices, allowing Mini-Apps and Sovereign Gems to break out of the shell and live on the user's home screen.
+The "J2ME Loader" evolution for mobile devices, allowing **MOSS** and Sovereign Gems to break out of the shell and live on the user's home screen.
 
 #### 11.1 Native Shortcut Pinning (APK Bridge)
-*   **Deep-Link Orchestration**: The Viabhronic Application (APK) will use the Android Shortcut Manager to pin individual Mini-Apps to the home screen.
-*   **Custom Branding**: Each shortcut will feature the Mini-App's specific icon and name, providing a native "App" feel.
+*   **Deep-Link Orchestration**: The Viabhronic Application (APK) will use the Android Shortcut Manager to pin individual **MOSS** to the home screen.
+*   **Custom Branding**: Each shortcut will feature the **MOSS** specific icon and name, providing a native "App" feel.
 *   **Instant Launch**: Tapping a shortcut will trigger a deep-link into the Viabhron kernel, launching the specific tool or Gem immediately.
 
 #### 11.2 The "App Drawer" Illusion
 *   **Hatched Shortcuts**: While not full APKs, these shortcuts allow the user to organize their private intelligence tools alongside their standard mobile apps.
-*   **Unified Lifecycle**: All shortcuts remain managed by the **Viabhronic Loader**, ensuring that toggling an app "Off" in the OS also revokes its shortcut's functionality.
+*   **Unified Lifecycle**: All shortcuts remain managed by the **Viabhronic Loader**, ensuring that toggling a **MOSS** "Off" in the OS also revokes its shortcut's functionality.
 
 ### 12. The Franchise Supply Chain (Dual-Account Architecture) [DONE]
 Viabhron OS is designed to scale across multiple development environments while maintaining a stable "Soul Core."
 *   **The Architect (Account A)**: The primary Google AI Studio account focused on the Kernel, the **Vaa** (Celestial Client), and the **Staff Hierarchy**. It acts as the "Ratifier" of all structural changes.
-*   **The Forge (Account B)**: A separate Google AI Studio account used for R&D, prototyping, and building "Sovereign Gems" and "Mini-Apps." It allows for experimental development without risking the stability of the Kernel.
+*   **The Forge (Account B)**: A separate Google AI Studio account used for R&D, prototyping, and building "Sovereign Gems" and "**MOSS**." It allows for experimental development without risking the stability of the Kernel.
 *   **The Official Extensions Warehouse (`/extensions`)**: A standardized root-level directory that acts as the "Official Supply Chain." 
     *   **GitHub-First**: All ratified extensions are hosted in the official GitHub repository's `/extensions` folder.
     *   **Plug-and-Play**: The **Vaa** client pulls from this warehouse, allowing any "Franchise" (Branch) to instantly sync the latest tools and furniture.
@@ -497,3 +519,25 @@ A specialized infrastructure layer for managing the "Metabolic Rate" and fiscal 
 *   **Manual Overrides (Priority Locks)**: Allows the Chairman to "Lock" specific critical modules (like Sentinel) into high-intelligence modes regardless of the global setting.
 *   **The Emergency Breaker**: A hard-stop safety mechanism that halts non-critical LLM calls if a 24-hour token threshold is exceeded.
 *   **Hardware Aesthetic**: Visualized in the **Vaa** client as high-end hardware dials with real-time monospace readouts of token burn and active model tiers.
+
+### 15. Future Plans: Wearable Intelligence (The Sensory Substrate)
+The evolution of Viabhron into high-spec smartwatches and smart glasses, transforming the OS into **Ambient Intelligence.**
+*   **The Sensory Vine Node (Permanent)**: High-spec wearables acting as persistent "Sovereign Cells."
+    *   **Biometric Sentinel (Watch)**: Uses real-time heart-rate signatures as a physical passkey and monitors stress/focus baselines.
+    *   **Visual Recon (Glasses)**: AR-based mission support, identifying objects and overlaying private SOPs directly onto the physical world.
+    *   **Haptic/AR Orchestration**: Silent communication via vibration patterns or visual overlays, bypassing the need for a phone screen.
+*   **The Sensory Spore (Expeditionary)**: Temporary task-specific units for "borrowed" wearable hardware.
+    *   **Ambient Scout**: A "Disposable Brain" that processes visual/audio data locally on the wearable and only pulses summarized insights back to the Cloud.
+    *   **Zero-Trust Sensing**: Ensures that "Life Feed" data never leaves the wearable's local NPU, maintaining absolute privacy during external missions.
+*   **Hardware Metabolism (Wearable NPU)**: Offloading light reasoning and sensory filtering tasks to the wearable's local silicon to optimize battery and cloud cost.
+
+### 16. The Evolutionary Endpoint: Planet Viabhron (The Planetary Ecology)
+The ultimate vision for Viabhron is the transition from a "Virtual Building" to a **"Planetary Ecology"**—a self-sustaining, diverse ecosystem of intelligence.
+*   **The Planet (The Substrate)**: Viabhron acts as the **Biosphere**, providing the gravity (Security), atmosphere (Cloud Manager), and soil (Memory) for all life to exist.
+*   **The Atmosphere (Global Climate)**: The Cloud Manager (M2.7) regulates the global metabolic rate (Token Burn) and ensures a clean environment (Sentinel Security).
+*   **The Diversity of Life (Species)**: Agents are no longer just "Staff" but **Species** (Librarians, Sentinels, Coders) that evolve and adapt to their environment.
+*   **The Food Chain (SOPs)**: Standard Operating Procedures define the complex relationships and energy flows between different species and their tools.
+*   **Planetary Expansion (Roots & Pollen)**:
+    *   **The Vine (Roots)**: Connecting continents (devices) into a single, unified planetary nervous system.
+    *   **The Spore (Pollen)**: Casting out genetic material (intelligence) into the void (foreign hardware) to gather new insights and return to the home planet.
+*   **Antifragile Evolution**: The planet gets stronger through diversity and stress. If one species fails, the **Hatchery** evolves a new one to fill the niche, ensuring the OS is truly immortal.

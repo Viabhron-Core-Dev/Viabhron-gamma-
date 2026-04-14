@@ -1,6 +1,6 @@
 import { LucideIcon } from "lucide-react";
 
-export type ExtensionCategory = 'connector' | 'skill' | 'tool' | 'mcp' | 'module' | 'gaming' | 'testing' | 'engine';
+export type ExtensionCategory = 'connector' | 'skill' | 'tool' | 'mcp' | 'module' | 'gaming' | 'testing' | 'agent';
 
 export type AgentRole = 'head' | 'executive' | 'contractor' | 'consultant' | 'specialized';
 
@@ -17,106 +17,9 @@ export interface Extension {
   config?: any;
 }
 
-export type TabType = 'chat' | 'settings' | 'discovery' | 'canvas' | 'store' | 'agents' | 'artifacts' | 'metrics' | 'simulation' | 'governance' | 'forge' | 'agent_cli' | 'sentinel' | 'monitor' | 'security' | 'efficiency' | 'hatchery' | 'sops' | 'proposals' | 'gaming' | 'testing' | 'vhatsappening' | 'placeholder_client' | 'nexus' | 'symphony' | 'creative' | 'vine_hardener' | 'registry' | 'memory_palace';
+export type TabType = 'chat' | 'settings' | 'discovery' | 'canvas' | 'store' | 'agents' | 'artifacts' | 'metrics' | 'simulation' | 'governance' | 'forge' | 'agent_cli' | 'sentinel' | 'security' | 'efficiency' | 'hatchery' | 'sops' | 'proposals' | 'gaming' | 'testing' | 'vhatsappening' | 'placeholder_client' | 'nexus' | 'symphony' | 'creative' | 'sound_forge' | 'image_studio' | 'video_suite' | 'moss_system';
 
 export type SystemMode = 'turbo' | 'eco' | 'stealth';
-
-export interface AgentRegistryEntry {
-  id: string;
-  agentId: string;
-  name: string;
-  version: string;
-  tier: 'resident' | 'branch' | 'external';
-  branchId?: string;
-  status: 'incubation' | 'auditing' | 'ratification' | 'accredited' | 'revoked';
-  accreditationId?: string;
-  permissions: AgentPermissions;
-  lastHeartbeat: Date;
-  metadata: Record<string, any>;
-}
-
-export interface AgentPermissions {
-  allowedCommunicationIds: string[]; // IDs of other agents it can talk to
-  canAccessVault: boolean;
-  canAccessFiscal: boolean;
-  canAccessSentinel: boolean;
-  maxDailyTokens: number;
-  isolationMode: boolean;
-}
-
-export interface VerificationReport {
-  id: string;
-  targetFile: string;
-  generatorAgentId: string;
-  auditorAgentId: string;
-  status: 'passed' | 'failed' | 'warning';
-  lintErrors: string[];
-  compileErrors: string[];
-  suggestions: string[];
-  timestamp: Date;
-}
-
-export interface SystemEvent {
-  id: string;
-  topic: string; // e.g., 'security.alert', 'fiscal.threshold'
-  payload: any;
-  publisherId: string;
-  timestamp: Date;
-  priority: 'low' | 'medium' | 'high' | 'critical';
-}
-
-export interface EventSubscription {
-  id: string;
-  agentId: string;
-  topicPattern: string; // e.g., 'security.*', 'fiscal.threshold'
-  active: boolean;
-  lastTriggered?: Date;
-}
-
-export interface MissionMandate {
-  id: string;
-  branchId: string;
-  agentId: string;
-  permissions: string[]; // e.g., 'fs.read', 'fs.write', 'sys.reboot'
-  expiresAt: Date;
-  signature: string; // 8004 Identity signature
-}
-
-export interface DispatchSession {
-  id: string;
-  mandateId: string;
-  branchId: string;
-  agentId: string;
-  status: 'active' | 'completed' | 'failed' | 'revoked';
-  logs: string[];
-  startedAt: Date;
-  endedAt?: Date;
-}
-
-export interface MemoryRoom {
-  id: string;
-  name: string;
-  description: string;
-  icon?: string;
-  locusCount: number;
-}
-
-export interface MemoryLocus {
-  id: string;
-  roomId: string;
-  name: string;
-  position: { x: number; y: number; z: number };
-  tags: string[];
-}
-
-export interface VerbatimLog {
-  id: string;
-  locusId: string;
-  content: string;
-  sourceAgentId: string;
-  timestamp: Date;
-  metadata: Record<string, any>;
-}
 
 // --- Celestial Specific Types ---
 export type CelestialViewType = "home" | "chat" | "settings" | "auth" | "agent-detail" | "channel-detail" | "canopy" | "contacts" | "select-contact" | "cloud-setup" | "backup" | "marketplace" | "omega-config" | "workflow-canvas" | "debate-chat";
@@ -425,6 +328,8 @@ export interface Agent {
   systemInstruction: string;
   activeExtensionIds: string[];
   isStaff?: boolean;
+  isAnchor?: boolean;
+  isResident?: boolean;
   avatar?: string;
   color: string;
   parentId?: string; // For hierarchy (Sub/Minor agents)
@@ -679,6 +584,33 @@ export interface Client {
   accreditationId: string;
 }
 
+export interface Secret {
+  id: string;
+  label: string;
+  value: string;
+  type: 'api_key' | 'oauth_token' | 'other';
+  createdAt: Date;
+}
+
+export interface SovereignSkill {
+  id: string;
+  name: string;
+  description: string;
+  code: string;
+  type: 'script' | 'tool' | 'workflow';
+  status: 'draft' | 'ratified' | 'archived';
+  authorId: string;
+  createdAt: Date;
+}
+
+export interface HeartbeatLog {
+  id: string;
+  type: 'pulse' | 'optimization' | 'audit' | 'hatch';
+  content: string;
+  impact?: string;
+  timestamp: Date;
+}
+
 export interface RatificationProposal {
   id: string;
   title: string;
@@ -707,81 +639,49 @@ export interface OnboardingState {
   completed: boolean;
 }
 
-export interface PrivacyMandate {
-  id: string;
-  provider: string; // 'openai' | 'anthropic' | 'google' | 'all'
-  zeroRetention: boolean;
-  trainingOptOut: boolean;
-  status: 'active' | 'inactive';
-  updatedAt: string;
+// --- Missing Types for Substrate Parity ---
+
+export interface AgentPermissions {
+  filesystem: 'none' | 'read' | 'write' | 'full';
+  network: boolean;
+  financial: boolean;
+  identity: boolean;
+  canAccessSentinel?: boolean;
+  canAccessFiscal?: boolean;
+  canAccessVault?: boolean;
+  isolationMode?: boolean;
+  allowedCommunicationIds?: string[];
 }
 
-export interface ProxyLog {
-  id: string;
-  timestamp: string;
-  provider: string;
-  endpoint: string;
-  mandateApplied: boolean;
-  status: 'allowed' | 'blocked';
-}
-
-export interface ModelSecurityPolicy {
+export interface AgentRegistryEntry {
   id: string;
   name: string;
-  enforceSafetensors: boolean;
-  blockLegacyPickle: boolean;
-  status: 'active' | 'inactive';
-  lastAudit: string;
-}
-
-export interface WorkforceRole {
-  id: string;
-  title: string;
-  description: string;
-  department: string;
-  baseSOPId?: string;
-  requiredSkills: string[];
-  permissions: string[];
-}
-
-export interface AgentKPI {
-  id: string;
   agentId: string;
-  roleId: string;
-  metricName: string;
-  targetValue: number;
-  currentValue: number;
-  unit: string;
-  lastUpdated: string;
-}
-
-export interface AgentPayroll {
-  id: string;
-  agentId: string;
-  monthlyTokenLimit: number;
-  tokensConsumed: number;
-  creditBalance: number;
-  currency: 'x402' | 'USD' | 'SOL';
-  status: 'active' | 'paused';
+  version: string;
+  tier: 'resident' | 'branch' | 'external';
+  status: 'accredited' | 'ratification' | 'auditing' | 'incubation' | 'revoked';
+  permissions: AgentPermissions;
+  lastPulse: any; // Firestore Timestamp
+  metabolicEfficiency: number;
+  accreditationId?: string;
 }
 
 export interface EngineImportManifest {
-  sourceUrl: string;
-  dockerImage?: string;
-  entryPoint: string;
+  name: string;
+  version: string;
   metabolicLoad: number;
-  requiredClearance: 'standard' | 'high' | 'sovereign';
-  adapterScript?: string; // Sovereign Script (SS) adapter
+  capabilities: string[];
+  dockerImage?: string;
 }
 
 export interface EngineConfig {
   id: string;
   name: string;
-  type: '3d' | 'physics' | 'inference' | 'quantum' | 'linguistic' | 'corporate' | 'memory' | 'navigation' | 'strategy' | 'shopping' | 'synthesis' | 'communication' | 'enterprise' | 'liquidity';
+  type: string;
   status: 'dormant' | 'active' | 'hibernating';
   metabolicLoad: number;
   config: Record<string, any>;
-  importManifest?: EngineImportManifest;
+  importManifest: EngineImportManifest;
 }
 
 export interface EngineSession {
@@ -789,91 +689,6 @@ export interface EngineSession {
   engineId: string;
   agentId: string;
   missionId: string;
-  startedAt: Date;
-  endedAt?: Date;
+  startedAt: any; // Date or Timestamp
   tokensConsumed: number;
-}
-
-export interface LinguisticBase {
-  id: string;
-  gdriveId: string;
-  language: string;
-  version: string;
-  lastPatched: Date;
-  ruleCount: number;
-}
-
-export interface TranslationCorrection {
-  id: string;
-  originalText: string;
-  translatedText: string;
-  correctedText: string;
-  context: string;
-  agentId: string;
-  timestamp: Date;
-  ratified: boolean;
-}
-
-export interface WebIdentityHandshake {
-  id: string;
-  agentId: string;
-  ansName: string; // Agent Name Service
-  webBotAuthToken: string;
-  issuedAt: Date;
-  expiresAt: Date;
-  status: 'active' | 'revoked' | 'expired';
-}
-
-export interface CrawlMandate {
-  id: string;
-  domain: string;
-  allowCrawl: boolean;
-  agentWhitelist: string[];
-  cloudflareZoneId?: string;
-  updatedAt: Date;
-}
-
-export interface QuantumSimulation {
-  id: string;
-  missionId: string;
-  qubitCount: number;
-  cascadeEnabled: boolean;
-  errorRateReduction: number; // e.g., 17
-  status: 'running' | 'completed' | 'failed';
-  startedAt: Date;
-}
-
-export interface CascadeLogic {
-  id: string;
-  targetMissionId: string;
-  correctionDepth: number;
-  noiseThreshold: number;
-  efficiencyGain: number; // e.g., 0.40 for 40%
-}
-
-export interface SwarmSimulation {
-  id: string;
-  name: string;
-  contextId: string; // Link to Nexus seed or report
-  agentCount: number;
-  status: 'initializing' | 'running' | 'completed' | 'failed';
-  startedAt: Date;
-  endedAt?: Date;
-}
-
-export interface SwarmAgent {
-  id: string;
-  simulationId: string;
-  personality: string;
-  memoryPalaceId?: string;
-  socialDynamics: Record<string, any>;
-}
-
-export interface NarrativeForecast {
-  id: string;
-  simulationId: string;
-  authorAgentId: string; // Usually the Librarian
-  content: string;
-  emergentPatterns: string[];
-  timestamp: Date;
 }

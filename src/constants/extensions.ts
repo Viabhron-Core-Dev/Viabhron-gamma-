@@ -1,5 +1,18 @@
 import { Extension } from '../types';
-import { githubConnector, linearConnector, cqConnector, huggingFaceConnector, gmailConnector, slackConnector } from '../../extensions/connectors';
+import { 
+  githubConnector, 
+  linearConnector, 
+  cqConnector, 
+  huggingFaceConnector, 
+  gmailConnector, 
+  slackConnector,
+  x402Connector,
+  trustpilotConnector,
+  arduinoConnector,
+  flowiseConnector,
+  substackConnector,
+  lumaUni1Connector
+} from '../../extensions/connectors';
 import { globalPulseSkill, docForgeSkill, artifactSandboxSkill, codeHunterSkill, socialSentinelSkill, githubSecurityAuditorSkill, creativeDirectorSkill } from '../../extensions/skills';
 import { headlessBrowserTool, pdfExtractorTool, codeParserTool } from '../../extensions/tools';
 import { localDatabaseMcp, systemMetricsMcp, geminiApiDocsMcp, googleWorkspaceMcp, openClawProtocol } from '../../extensions/mcp';
@@ -14,7 +27,36 @@ import {
   sovereignCreativeStudioModule,
   viabhronNexusModule,
   symphonyModule,
+  soundForgeModule,
+  imageStudioModule,
+  videoSuiteModule,
+  mossSystemModule,
+  identity8004Module,
+  securityRadarModule,
+  agentRegistryModule,
+  smonitorProtocolModule,
+  linguisticBridgeModule,
+  memoryPalaceModule,
+  verificationLoopModule,
+  eventBusModule,
+  dispatchModule,
+  deepExecutionModule,
+  ethicalSentinelModule,
+  webReconShieldModule,
+  vibeAssemblyModule,
 } from '../../extensions/modules';
+import {
+  cloudManagerAgent,
+  fiscalComptrollerAgent,
+  identityRegistrarAgent,
+  sentinelAgent,
+  adversarialAuditorAgent,
+  swarmArchitectAgent,
+  linguisticEngineerAgent,
+  chiefEditorAgent,
+  soundEngineerAgent,
+  visualSynthesizerAgent
+} from '../../extensions/agents';
 
 export const INITIAL_EXTENSIONS: Extension[] = [
   // Connectors
@@ -24,6 +66,12 @@ export const INITIAL_EXTENSIONS: Extension[] = [
   huggingFaceConnector,
   gmailConnector,
   slackConnector,
+  x402Connector,
+  trustpilotConnector,
+  arduinoConnector,
+  flowiseConnector,
+  substackConnector,
+  lumaUni1Connector,
   
   // Skills
   globalPulseSkill,
@@ -57,4 +105,33 @@ export const INITIAL_EXTENSIONS: Extension[] = [
   sovereignCreativeStudioModule,
   viabhronNexusModule,
   symphonyModule,
+  soundForgeModule,
+  imageStudioModule,
+  videoSuiteModule,
+  mossSystemModule,
+  identity8004Module,
+  securityRadarModule,
+  agentRegistryModule,
+  smonitorProtocolModule,
+  linguisticBridgeModule,
+  memoryPalaceModule,
+  verificationLoopModule,
+  eventBusModule,
+  dispatchModule,
+  deepExecutionModule,
+  ethicalSentinelModule,
+  webReconShieldModule,
+  vibeAssemblyModule,
+
+  // Agents
+  cloudManagerAgent,
+  fiscalComptrollerAgent,
+  identityRegistrarAgent,
+  sentinelAgent,
+  adversarialAuditorAgent,
+  swarmArchitectAgent,
+  linguisticEngineerAgent,
+  chiefEditorAgent,
+  soundEngineerAgent,
+  visualSynthesizerAgent,
 ];

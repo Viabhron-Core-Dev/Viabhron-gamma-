@@ -408,7 +408,7 @@ export const GitHubKnockout: React.FC<KnockoutProps> = ({ onClose }) => {
               <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Personal Access Token (PAT)</label>
               <input 
                 type="password" 
-                placeholder="ghp_•••��••••••••••••••••••••••••••••"
+                placeholder="ghp_••••••••••••••••••••••••••••••••"
                 className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm text-white outline-none focus:border-indigo-500/50 transition-colors"
               />
             </div>

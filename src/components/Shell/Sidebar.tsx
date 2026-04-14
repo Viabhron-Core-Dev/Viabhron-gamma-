@@ -27,10 +27,7 @@ import {
   FlaskConical,
   Monitor,
   Gamepad2,
-  Sparkles,
-  LayoutGrid,
-  Search,
-  ShieldCheck
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Extension, ExtensionCategory, SystemMode, MiniApp, Client, SecurityRule, EfficiencyPatch } from '../../types';
@@ -74,10 +71,10 @@ interface SidebarProps {
   onOpenSOPs: () => void;
   onOpenProposals: () => void;
   onOpenSettings: () => void;
-  onOpenMonitor: () => void;
-  onOpenVineHardener: () => void;
-  onOpenMemoryPalace: () => void;
-  onOpenRegistry: () => void;
+  onOpenSoundForge: () => void;
+  onOpenImageStudio: () => void;
+  onOpenVideoSuite: () => void;
+  onOpenMossSystem: () => void;
   onOpenPlaceholderClient: () => void;
   geminiApiKey?: string;
   systemMode: SystemMode;
@@ -115,15 +112,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onOpenSOPs, 
   onOpenProposals, 
   onOpenSettings,
-  onOpenMonitor,
-  onOpenVineHardener,
-  onOpenMemoryPalace,
-  onOpenRegistry,
+  onOpenSoundForge,
+  onOpenImageStudio,
+  onOpenVideoSuite,
+  onOpenMossSystem,
   onOpenPlaceholderClient,
   geminiApiKey, 
   systemMode 
 }) => {
-  const [openSections, setOpenSections] = useState<Record<ExtensionCategory | 'miniapp' | 'client' | 'security' | 'efficiency' | 'testing' | 'testing_debug', boolean>>({
+  const [openSections, setOpenSections] = useState<Record<ExtensionCategory | 'miniapp' | 'client' | 'security' | 'efficiency' | 'testing_debug', boolean>>({
     connector: false,
     skill: false,
     tool: false,
@@ -131,15 +128,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
     module: false,
     gaming: false,
     testing: false,
+    agent: false,
     miniapp: false,
     client: false,
     security: false,
     efficiency: false,
-    testing_debug: false,
-    engine: false
+    testing_debug: false
   });
 
-  const toggleSection = (category: ExtensionCategory | 'miniapp' | 'client' | 'security' | 'efficiency' | 'testing_debug') => {
+  const toggleSection = (category: ExtensionCategory | 'miniapp' | 'client' | 'security' | 'efficiency' | 'testing' | 'testing_debug') => {
     setOpenSections(prev => ({ ...prev, [category]: !prev[category] }));
   };
 
@@ -275,6 +272,62 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </button>
               </div>
 
+              {/* Sound Forge Section */}
+              <div className="mb-4">
+                <button 
+                  onClick={onOpenSoundForge}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 hover:border-blue-500/40 transition-all group"
+                >
+                  <Icons.Music className="w-4 h-4 text-blue-400 group-hover:scale-110 transition-transform" />
+                  <div className="flex-1 text-left">
+                    <div className="text-[10px] font-bold text-white uppercase tracking-widest">Sound Forge</div>
+                    <div className="text-[8px] text-blue-400/60 font-medium uppercase tracking-tighter">Audio Synthesis</div>
+                  </div>
+                </button>
+              </div>
+
+              {/* Image Studio Section */}
+              <div className="mb-4">
+                <button 
+                  onClick={onOpenImageStudio}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/10 hover:border-purple-500/40 transition-all group"
+                >
+                  <Icons.Image className="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform" />
+                  <div className="flex-1 text-left">
+                    <div className="text-[10px] font-bold text-white uppercase tracking-widest">Image Studio</div>
+                    <div className="text-[8px] text-purple-400/60 font-medium uppercase tracking-tighter">Visual Synthesis</div>
+                  </div>
+                </button>
+              </div>
+
+              {/* Video Suite Section */}
+              <div className="mb-4">
+                <button 
+                  onClick={onOpenVideoSuite}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 hover:border-red-500/40 transition-all group"
+                >
+                  <Icons.Video className="w-4 h-4 text-red-400 group-hover:scale-110 transition-transform" />
+                  <div className="flex-1 text-left">
+                    <div className="text-[10px] font-bold text-white uppercase tracking-widest">Video Suite</div>
+                    <div className="text-[8px] text-red-400/60 font-medium uppercase tracking-tighter">Motion Synthesis</div>
+                  </div>
+                </button>
+              </div>
+
+              {/* Moss System Section */}
+              <div className="mb-4">
+                <button 
+                  onClick={onOpenMossSystem}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-green-500/20 bg-green-500/5 hover:bg-green-500/10 hover:border-green-500/40 transition-all group"
+                >
+                  <Icons.Sprout className="w-4 h-4 text-green-400 group-hover:scale-110 transition-transform" />
+                  <div className="flex-1 text-left">
+                    <div className="text-[10px] font-bold text-white uppercase tracking-widest">Moss System</div>
+                    <div className="text-[8px] text-green-400/60 font-medium uppercase tracking-tighter">App Transmutation</div>
+                  </div>
+                </button>
+              </div>
+
               {/* Metrics Section */}
               <div className="mb-4">
                 <button 
@@ -331,20 +384,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </button>
               </div>
 
-              {/* Memory Palace Section */}
-              <div className="mb-4">
-                <button 
-                  onClick={onOpenMemoryPalace}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 hover:border-emerald-500/40 transition-all group"
-                >
-                  <LayoutGrid className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-                  <div className="flex-1 text-left">
-                    <div className="text-[10px] font-bold text-white uppercase tracking-widest">Memory Palace</div>
-                    <div className="text-[8px] text-emerald-400/60 font-medium uppercase tracking-tighter">Spatial Long-Term Memory</div>
-                  </div>
-                </button>
-              </div>
-
               {/* Agent CLI Section */}
               <div className="mb-4">
                 <button 
@@ -369,48 +408,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <div className="flex-1 text-left">
                     <div className="text-[10px] font-bold text-white uppercase tracking-widest">Sentinel Guardian</div>
                     <div className="text-[8px] text-blue-400/60 font-medium uppercase tracking-tighter">Threat Detection</div>
-                  </div>
-                </button>
-              </div>
-
-              {/* Monitor Section */}
-              <div className="mb-4">
-                <button 
-                  onClick={onOpenMonitor}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/10 hover:border-purple-500/40 transition-all group"
-                >
-                  <Activity className="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform" />
-                  <div className="flex-1 text-left">
-                    <div className="text-[10px] font-bold text-white uppercase tracking-widest">Sovereign Monitor</div>
-                    <div className="text-[8px] text-purple-400/60 font-medium uppercase tracking-tighter">Event-Driven Intelligence</div>
-                  </div>
-                </button>
-              </div>
-
-              {/* Vine Hardener Section */}
-              <div className="mb-4">
-                <button 
-                  onClick={onOpenVineHardener}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 hover:border-blue-500/40 transition-all group"
-                >
-                  <ShieldCheck className="w-4 h-4 text-blue-400 group-hover:scale-110 transition-transform" />
-                  <div className="flex-1 text-left">
-                    <div className="text-[10px] font-bold text-white uppercase tracking-widest">Vine Hardener</div>
-                    <div className="text-[8px] text-blue-400/60 font-medium uppercase tracking-tighter">Branch Autonomy Control</div>
-                  </div>
-                </button>
-              </div>
-
-              {/* Federated Registry Section */}
-              <div className="mb-4">
-                <button 
-                  onClick={onOpenRegistry}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 hover:border-emerald-500/40 transition-all group"
-                >
-                  <ShieldCheck className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-                  <div className="flex-1 text-left">
-                    <div className="text-[10px] font-bold text-white uppercase tracking-widest">Federated Registry</div>
-                    <div className="text-[8px] text-emerald-400/60 font-medium uppercase tracking-tighter">Protocol 8009 // Governance</div>
                   </div>
                 </button>
               </div>

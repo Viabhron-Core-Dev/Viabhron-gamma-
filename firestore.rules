@@ -129,43 +129,41 @@ service cloud.firestore {
     //   - active: bool (required)
     //   - createdAt: timestamp
     //
-    // Collection: users/{userId}/kernel/engines/configs
-    // Document ID: {engineId}
+    // Collection: users/{userId}/secrets
+    // Document ID: {secretId}
+    // Fields:
+    //   - id: string (required)
+    //   - label: string (required)
+    //   - value: string (required)
+    //   - type: string (required, enum: api_key, oauth_token, other)
+    //   - createdAt: timestamp
+    //
+    // Collection: users/{userId}/skills
+    // Document ID: {skillId}
     // Fields:
     //   - id: string (required)
     //   - name: string (required)
-    //   - type: string (required, enum: 3d, physics, inference, quantum, linguistic)
-    //   - status: string (required, enum: dormant, active, hibernating)
-    //   - metabolicLoad: number (required)
+    //   - code: string (required)
+    //   - type: string (required, enum: script, tool, workflow)
+    //   - status: string (required, enum: draft, ratified, archived)
+    //   - createdAt: timestamp
     //
-    // Collection: users/{userId}/efficiency/linguistics/bases
-    // Document ID: {baseId}
-    // Fields:
-    //   - id: string (required)
-    //   - gdriveId: string (required)
-    //   - language: string (required)
-    //   - version: string (required)
-    //   - lastPatched: timestamp
-    //
-    // Collection: users/{userId}/security/web_shield/handshakes
-    // Document ID: {handshakeId}
-    // Fields:
-    //   - id: string (required)
-    //   - agentId: string (required)
-    //   - ansName: string (required)
-    //   - webBotAuthToken: string (required)
-    //   - issuedAt: timestamp
-    //   - expiresAt: timestamp
-    //   - status: string (required, enum: active, revoked, expired)
-    //
-    // Collection: users/{userId}/efficiency/swarm/simulations
-    // Document ID: {simId}
+    // Collection: users/{userId}/hatchery/projects
+    // Document ID: {projectId}
     // Fields:
     //   - id: string (required)
     //   - name: string (required)
-    //   - contextId: string (required)
-    //   - agentCount: number (required)
-    //   - status: string (required, enum: initializing, running, completed, failed)
+    //   - status: string (required, enum: ideation, development, auditing, staging, production)
+    //   - createdAt: timestamp
+    //
+    // Collection: users/{userId}/governance/proposals
+    // Document ID: {proposalId}
+    // Fields:
+    //   - id: string (required)
+    //   - title: string (required)
+    //   - type: string (required, enum: department, governance, infrastructure)
+    //   - status: string (required, enum: pending, ratified, shelved, vetoed)
+    //   - createdAt: timestamp
     //
     // ===============================================================
 
@@ -264,54 +262,38 @@ service cloud.firestore {
              data.urgencyLevel in ['standard', 'critical'];
     }
 
-    function isValidEngineConfig(data) {
-      return data.keys().hasAll(['id', 'name', 'type', 'status', 'metabolicLoad']) &&
-             data.type in ['3d', 'physics', 'inference', 'quantum', 'linguistic'] &&
-             data.status in ['dormant', 'active', 'hibernating'];
+    function isValidSecret(data) {
+      return data.keys().hasAll(['id', 'label', 'value', 'type', 'createdAt']) &&
+             data.type in ['api_key', 'oauth_token', 'other'];
     }
 
-    function isValidLinguisticBase(data) {
-      return data.keys().hasAll(['id', 'gdriveId', 'language', 'version', 'lastPatched', 'ruleCount']);
+    function isValidSkill(data) {
+      return data.keys().hasAll(['id', 'name', 'code', 'type', 'status', 'createdAt']) &&
+             data.type in ['script', 'tool', 'workflow'] &&
+             data.status in ['draft', 'ratified', 'archived'];
     }
 
-    function isValidWebHandshake(data) {
-      return data.keys().hasAll(['id', 'agentId', 'ansName', 'webBotAuthToken', 'issuedAt', 'expiresAt', 'status']) &&
-             data.status in ['active', 'revoked', 'expired'];
+    function isValidHatcheryProject(data) {
+      return data.keys().hasAll(['id', 'name', 'status', 'createdAt']) &&
+             data.status in ['ideation', 'development', 'auditing', 'staging', 'production'];
     }
 
-    function isValidCrawlMandate(data) {
-      return data.keys().hasAll(['id', 'domain', 'allowCrawl', 'agentWhitelist', 'updatedAt']);
+    function isValidProposal(data) {
+      return data.keys().hasAll(['id', 'title', 'type', 'status', 'createdAt']) &&
+             data.type in ['department', 'governance', 'infrastructure'] &&
+             data.status in ['pending', 'ratified', 'shelved', 'vetoed'];
     }
 
-    function isValidSwarmSim(data) {
-      return data.keys().hasAll(['id', 'name', 'contextId', 'agentCount', 'status', 'startedAt']) &&
-             data.status in ['initializing', 'running', 'completed', 'failed'];
+    function isValidSOP(data) {
+      return data.keys().hasAll(['id', 'title', 'leadAgentId', 'manifest', 'status']) &&
+             data.status in ['active', 'draft', 'archived'];
     }
 
-    function isValidNarrativeForecast(data) {
-      return data.keys().hasAll(['id', 'simulationId', 'authorAgentId', 'content', 'emergentPatterns', 'timestamp']);
-    }
-
-    function isValidWorkforceRole(data) {
-      return data.keys().hasAll(['id', 'title', 'description', 'clearanceLevel', 'metabolicCeiling']);
-    }
-
-    function isValidAgentKPI(data) {
-      return data.keys().hasAll(['id', 'agentId', 'roleId', 'metricName', 'targetValue', 'currentValue', 'unit', 'lastUpdated']);
-    }
-
-    function isValidAgentPayroll(data) {
-      return data.keys().hasAll(['id', 'agentId', 'monthlyTokenLimit', 'tokensConsumed', 'creditBalance', 'currency', 'status']) &&
-             data.status in ['active', 'paused'];
-    }
-
-    function isValidQuantumSim(data) {
-      return data.keys().hasAll(['id', 'missionId', 'qubitCount', 'cascadeEnabled', 'errorRateReduction', 'status', 'startedAt']) &&
-             data.status in ['running', 'completed', 'failed'];
-    }
-
-    function isValidCascadeLogic(data) {
-      return data.keys().hasAll(['id', 'targetMissionId', 'correctionDepth', 'noiseThreshold', 'efficiencyGain']);
+    function isValidExtension(data) {
+      return data.keys().hasAll(['id', 'name', 'category', 'status', 'source']) &&
+             data.category in ['connector', 'skill', 'tool', 'mcp', 'module', 'gaming', 'testing'] &&
+             data.status in ['active', 'inactive', 'error'] &&
+             data.source in ['inbuilt', 'external'];
     }
 
     // ===============================================================
@@ -402,59 +384,52 @@ service cloud.firestore {
         allow delete: if isOwner(userId);
       }
 
-      match /kernel/engines/configs/{engineId} {
+      match /secrets/{secretId} {
         allow read: if isOwner(userId);
-        allow create, update: if isOwner(userId) && isValidEngineConfig(request.resource.data);
+        allow create, update: if isOwner(userId) && isValidSecret(request.resource.data);
+        allow delete: if isOwner(userId);
       }
 
-      match /efficiency/linguistics/bases/{baseId} {
+      match /skills/{skillId} {
         allow read: if isOwner(userId);
-        allow create, update: if isOwner(userId) && isValidLinguisticBase(request.resource.data);
+        allow create, update: if isOwner(userId) && isValidSkill(request.resource.data);
+        allow delete: if isOwner(userId);
       }
 
-      match /security/web_shield/handshakes/{handshakeId} {
+      match /hatchery/projects/{projectId} {
         allow read: if isOwner(userId);
-        allow create, update: if isOwner(userId) && isValidWebHandshake(request.resource.data);
+        allow create, update: if isOwner(userId) && isValidHatcheryProject(request.resource.data);
+        allow delete: if isOwner(userId);
       }
 
-      match /security/web_shield/mandates/{mandateId} {
+      match /governance/proposals/{proposalId} {
         allow read: if isOwner(userId);
-        allow create, update: if isOwner(userId) && isValidCrawlMandate(request.resource.data);
+        allow create, update: if isOwner(userId) && isValidProposal(request.resource.data);
+        allow delete: if isOwner(userId);
       }
 
-      match /efficiency/swarm/simulations/{simId} {
+      match /governance/sops/{sopId} {
         allow read: if isOwner(userId);
-        allow create, update: if isOwner(userId) && isValidSwarmSim(request.resource.data);
+        allow create, update: if isOwner(userId) && isValidSOP(request.resource.data);
+        allow delete: if isOwner(userId);
       }
 
-      match /efficiency/swarm/forecasts/{forecastId} {
+      match /system/extensions/{extensionId} {
         allow read: if isOwner(userId);
-        allow create: if isOwner(userId) && isValidNarrativeForecast(request.resource.data);
+        allow create, update: if isOwner(userId) && isValidExtension(request.resource.data);
+        allow delete: if isOwner(userId);
       }
 
-      match /governance/workforce/roles/{roleId} {
+      match /system/logs/{logId} {
         allow read: if isOwner(userId);
-        allow create, update: if isOwner(userId) && isValidWorkforceRole(request.resource.data);
+        allow create: if isOwner(userId);
+        allow delete: if isOwner(userId);
       }
 
-      match /governance/workforce/kpis/{kpiId} {
+      match /heartbeat/{logId} {
         allow read: if isOwner(userId);
-        allow create, update: if isOwner(userId) && isValidAgentKPI(request.resource.data);
-      }
-
-      match /governance/workforce/payroll/{payrollId} {
-        allow read: if isOwner(userId);
-        allow create, update: if isOwner(userId) && isValidAgentPayroll(request.resource.data);
-      }
-
-      match /efficiency/quantum/simulations/{simId} {
-        allow read: if isOwner(userId);
-        allow create, update: if isOwner(userId) && isValidQuantumSim(request.resource.data);
-      }
-
-      match /efficiency/quantum/cascade/{logicId} {
-        allow read: if isOwner(userId);
-        allow create, update: if isOwner(userId) && isValidCascadeLogic(request.resource.data);
+        allow create: if isOwner(userId);
+        allow delete: if isOwner(userId);
       }
     }
   }

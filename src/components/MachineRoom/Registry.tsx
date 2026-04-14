@@ -38,7 +38,7 @@ export const Registry: React.FC = () => {
         ...doc.data(),
         id: doc.id,
         lastHeartbeat: doc.data().lastHeartbeat?.toDate() || new Date()
-      })) as AgentRegistryEntry[];
+      })) as unknown as AgentRegistryEntry[];
       setEntries(data);
       setIsLoading(false);
     }, (error) => {

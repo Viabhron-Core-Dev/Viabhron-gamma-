@@ -32,5 +32,5 @@ This document defines the roles and synchronization protocols for the Viabhron M
 
 ## 🛡️ Integrity & Governance
 
-*   **Accreditation**: Only code residing in the Beta Mirror is considered "Accredited" for production-level agent missions.
+*   **Accreditation**: The **entire repository** (all source code, configuration, and documentation) residing in the Beta Mirror is considered "Accredited" for production-level agent missions.
 *   **Sovereignty**: This mapping ensures that the AI remains a tool of the Chairman, following the established path from R&D to Ratification.
